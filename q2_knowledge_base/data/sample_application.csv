@@ -1,0 +1,13 @@
+application_id,record_type,customer_name,business_type,business_vintage_months,requested_amount_inr,loan_purpose,document_status,prototype_status,human_callback_requested
+APP001,Synthetic,Aarav Mehta,Retail grocery,36,1000000,Working capital,complete,preliminary_eligible,No
+APP002,Synthetic,Priya Nair,Small manufacturing,18,800000,Equipment,complete,vintage_not_met,No
+APP003,Synthetic,Rohan Verma,IT services,48,3000000,Expansion,complete,amount_above_range,No
+APP004,Synthetic,Neha Sharma,Restaurant,30,500000,Inventory,missing,documents_needed,Yes
+APP005,Synthetic,Kabir Singh,Wholesale,60,200000,Working capital,complete,preliminary_eligible,No
+APP006,Synthetic,Isha Patel,Online retail,12,400000,Marketing,complete,vintage_not_met,Yes
+APP007,Synthetic,Vikram Rao,Logistics,42,2500000,Fleet expansion,complete,preliminary_eligible,Yes
+APP008,Synthetic,Ananya Das,Consulting,28,750000,Business expansion,missing,documents_needed,No
+APP009,Synthetic,Mohit Kapoor,Textiles,72,1500000,Inventory,complete,preliminary_eligible,No
+APP010,Synthetic,Simran Kaur,Food processing,24,2500000,Equipment,complete,preliminary_eligible,Yes
+APP011,Synthetic,Dev Malhotra,Retail electronics,20,900000,Inventory,complete,vintage_not_met,No
+APP012,Synthetic,Meera Iyer,Professional services,40,100000,Working capital,complete,amount_below_range,Yes

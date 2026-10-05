@@ -1,0 +1,55 @@
+NovaFin Business Loan — Application Process
+Version: 1.0
+
+Stage 1 — Initial conversation
+Collect only the information needed to understand the customer's request:
+- Business type
+- Approximate business vintage
+- Requested loan amount
+- Intended use
+- Whether the customer wants a human callback
+
+Stage 2 — Basic eligibility check
+Check:
+- Business vintage >= 24 months
+- Requested amount between ₹2 lakh and ₹25 lakh
+- Basic identity/business information is available
+
+Stage 3 — Document collection
+Typical information/documents:
+- Identity proof
+- PAN or applicable tax identification
+- Business proof/registration where applicable
+- Recent business bank statements or other requested financial records
+
+Stage 4 — Assessment
+The information may be reviewed and verified. Additional documents may be requested.
+
+Stage 5 — Decision
+Final approval is subject to verification and internal assessment.
+
+Stage 6 — Customer communication
+The customer can be informed of the next step. The prototype should not fabricate approval, pricing, disbursement date, or other unavailable information.
+
+Voice-agent decision logic:
+
+IF customer asks for human:
+    escalate
+
+ELSE IF requested amount < 200000 OR requested amount > 2500000:
+    explain product range and offer human assistance
+
+ELSE IF business vintage < 24 months:
+    explain stated eligibility requirement and offer human assistance
+
+ELSE IF required information is incomplete:
+    ask clarification
+
+ELSE:
+    mark as "preliminary qualification met" and explain that final approval is not guaranteed
+
+Fallback:
+If the knowledge base does not contain the answer:
+    say that the current information does not provide the answer
+    do not guess
+    offer human assistance

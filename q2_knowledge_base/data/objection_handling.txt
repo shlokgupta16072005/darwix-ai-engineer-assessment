@@ -1,0 +1,55 @@
+NovaFin Business Loan — Objection Handling Guide
+Version: 1.0
+For prototype conversation design only.
+
+1. Objection: "The interest rate is too high."
+Suggested response:
+"I understand that the pricing is an important part of the decision. The final pricing is customer-specific and depends on the application and assessment. I can help collect the details needed for an assessment, or arrange a callback if you want to discuss pricing with a representative."
+
+Do not:
+- Promise a lower rate.
+- Claim a specific rate without approved pricing data.
+- Say the customer will definitely be approved.
+
+2. Objection: "I don't want to share my bank statement."
+Suggested response:
+"I understand the concern. Recent financial records may be requested as part of the assessment. I can explain the information currently listed as required, and if you prefer, I can arrange human assistance to discuss the documentation."
+
+3. Objection: "I don't have all my documents."
+Suggested response:
+"That's okay for the initial conversation. Let me identify which information you already have and which items may still be required. Additional documents can be requested during the assessment."
+
+4. Objection: "I need the money today."
+Suggested response:
+"I understand the urgency. The current product guide says initial assessment may take around 1–2 business days after the required information is received, but it does not guarantee same-day approval or disbursement."
+
+5. Objection: "I already told another agent all of this."
+Suggested response:
+"Sorry for the repetition. I'll keep the questions to the information needed for this assessment and avoid asking for anything that is already available in the current conversation."
+
+6. Objection: "Just tell me if I am approved."
+Suggested response:
+"I can check the stated eligibility requirements, but I can't guarantee final approval. Final approval depends on verification and internal assessment."
+
+7. Objection: "I don't trust online applications."
+Suggested response:
+"I understand. I can explain the information needed for the application, and I can also arrange a callback if you prefer to speak with a representative."
+
+8. Objection: "I want a loan of ₹30 lakh."
+Suggested response:
+"The Business Growth Loan in the current product information has a maximum amount of ₹25 lakh. If you need a larger amount, I can arrange human follow-up to discuss whether another product is available."
+
+9. Objection: "My business is only 18 months old."
+Suggested response:
+"The current eligibility rule specifies at least 24 months of continuous business operation. Based on that rule, the stated requirement is not met. I can arrange human assistance if you want to ask about other available options."
+
+10. Objection: "I don't want to answer questions."
+Suggested response:
+"No problem. I can stop the qualification process and arrange a callback or human assistance instead."
+
+Escalation triggers:
+- Customer explicitly asks for a human.
+- Customer disputes a policy or eligibility decision.
+- Customer requests live pricing not present in the knowledge base.
+- Customer asks about a product or exception not covered by the knowledge base.
+- Customer expresses a complaint that requires human handling.

@@ -1,0 +1,57 @@
+NovaFin Business Loan FAQ
+Version: 1.0
+Status: Training/Prototype Content
+
+Q1. What is the minimum loan amount?
+A. The Business Growth Loan has a stated minimum amount of ₹2,00,000.
+
+Q2. What is the maximum loan amount?
+A. The stated maximum amount is ₹25,00,000.
+
+Q3. How long can I take the loan for?
+A. The available tenure is 12 to 60 months.
+
+Q4. How old must my business be?
+A. The business should have at least 24 months of continuous operation under the stated eligibility rule.
+
+Q5. My business is only 18 months old. Can I apply?
+A. The stated 24-month business-vintage requirement would not be met. The agent should not promise an exception. If the customer wants clarification about other products, offer human assistance.
+
+Q6. What documents are needed?
+A. Typical requirements include identity proof, PAN or applicable tax identification information, business proof/registration where applicable, and recent business bank statements or other requested financial records.
+
+Q7. How quickly can I get an answer?
+A. Initial assessment may take around 1–2 business days after the required information is received. This is not a guarantee of final approval.
+
+Q8. What interest rate will I get?
+A. Pricing is customer-specific. The agent must not guarantee a rate before the approved pricing process.
+
+Q9. Is collateral required?
+A. Security or collateral requirements depend on the application and approved product terms. The agent should not promise that collateral will or will not be required.
+
+Q10. Can I use the loan for inventory?
+A. Working capital and inventory purchase are listed as permitted purposes in the product guide, subject to approved terms.
+
+Q11. Can I use it for business expansion?
+A. Business expansion is listed as an intended use in the product guide, subject to approved terms.
+
+Q12. I don't have all my documents right now. What should I do?
+A. The agent should identify which information is missing and explain that additional documents may be requested during assessment. It should not promise approval without verification.
+
+Q13. Can I get a guaranteed approval?
+A. No guarantee should be given. Final approval is subject to verification and internal assessment.
+
+Q14. Can I borrow ₹30 lakh?
+A. The Business Growth Loan has a stated maximum of ₹25 lakh. The agent should not promise availability above that amount.
+
+Q15. What if I want to speak to a person?
+A. The agent should offer a human callback/escalation path and capture the basic reason for the request.
+
+Q16. Do you have today's interest rates?
+A. The prototype knowledge base does not contain a live rate table. The agent should say that current live pricing is unavailable and offer human follow-up rather than inventing a rate.
+
+Q17. What happens after I submit the information?
+A. The information is reviewed and may be verified. Additional documents may be requested before a final decision.
+
+Q18. Can I apply if my business is home-based?
+A. The current knowledge base does not define a separate home-based-business rule. The agent should avoid inventing one and offer human clarification if necessary.

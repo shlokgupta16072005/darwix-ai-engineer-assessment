@@ -1,0 +1,7 @@
+pypdf
+pandas
+scikit-learn
+numpy
+pytest
+joblib
+openai

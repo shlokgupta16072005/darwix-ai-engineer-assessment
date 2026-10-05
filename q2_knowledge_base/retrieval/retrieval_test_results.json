@@ -1,0 +1,56 @@
+{
+    "total_tests": 5,
+    "passed_tests": 5,
+    "results": [
+        {
+            "query": "What is the minimum business vintage?",
+            "expected_source": "faq.txt",
+            "expected_keyword": "24 months",
+            "top_result": "faq.txt",
+            "top_score": 0.3535,
+            "source_found_in_top_3": true,
+            "keyword_found_in_top_3": true,
+            "result": "PASS"
+        },
+        {
+            "query": "What documents are required for the loan application?",
+            "expected_source": "eligibility_rules.pdf",
+            "expected_keyword": "documents",
+            "top_result": "faq.txt",
+            "top_score": 0.2353,
+            "source_found_in_top_3": true,
+            "keyword_found_in_top_3": true,
+            "result": "PASS"
+        },
+        {
+            "query": "What is the minimum and maximum loan amount?",
+            "expected_source": "faq.txt",
+            "expected_keyword": "25,00,000",
+            "top_result": "faq.txt",
+            "top_score": 0.5865,
+            "source_found_in_top_3": true,
+            "keyword_found_in_top_3": true,
+            "result": "PASS"
+        },
+        {
+            "query": "What should I say if the customer thinks the interest rate is too high?",
+            "expected_source": "objection_handling.txt",
+            "expected_keyword": "interest",
+            "top_result": "objection_handling.txt",
+            "top_score": 0.4505,
+            "source_found_in_top_3": true,
+            "keyword_found_in_top_3": true,
+            "result": "PASS"
+        },
+        {
+            "query": "Can a business that has operated for only one year qualify?",
+            "expected_source": "eligibility_rules.pdf",
+            "expected_keyword": "24 months",
+            "top_result": "eligibility_rules.pdf",
+            "top_score": 0.2328,
+            "source_found_in_top_3": true,
+            "keyword_found_in_top_3": true,
+            "result": "PASS"
+        }
+    ]
+}
