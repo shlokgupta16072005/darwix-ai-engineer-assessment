@@ -7,7 +7,7 @@ This repository contains four prototypes for the Darwix AI Engineer assessment.
 | Component | Current implementation | Important limitation |
 |---|---|---|
 | Q1 — Voice Agent | Local STT, conversation agent, local TTS, voice loop, and Q2 retrieval client | Validate the complete required call scenarios and recorded-call evidence |
-| Q2 — Knowledge Base | Document loading, cleaning, PII processing, chunking, retrieval, and RAG answer generation | The `ingestion/build_kb.py` entry point and three files in `tests/` are empty; use the implemented modules and retrieval tests |
+| Q2 — Knowledge Base | Document loading, cleaning, PII processing, chunking, retrieval, and RAG answer generation | The build entry point and three Q2 test files are implemented; see the commands below to build the index and run tests. |
 | Q3 — Multilingual | Rule-based Filipino and Indonesian text routing, localized responses, and unit tests | No demonstrated end-to-end multilingual ASR/TTS pipeline |
 | Q4 — Live Insights | Transcript replay, prerecorded WAV replay using Faster-Whisper, rule-based signals, nudge cooldowns, dashboard API, and tests | No demonstrated live microphone or telephony stream; latency results are prototype measurements |
 
@@ -50,7 +50,7 @@ The project includes local Faster-Whisper speech recognition, a conversation age
 
 See `q2_knowledge_base/README.md` for the ingestion pipeline, retrieval workflow, source documents, and evidence.
 
-The implemented retrieval modules include source-document loading, cleaning, PII processing, chunking, search, and RAG answer generation. The standalone `ingestion/build_kb.py` and three files in `q2_knowledge_base/tests/` are currently empty; do not rely on those files as runnable entry points or tests.
+The implemented retrieval modules include source-document loading, cleaning, PII processing, chunking, search, and RAG answer generation. The standalone `ingestion/build_kb.py` builds the knowledge-base index. The three files in `q2_knowledge_base/tests/` contain automated tests for chunking, cleaning, and retrieval.
 
 ### Q3 — Multilingual Support
 
