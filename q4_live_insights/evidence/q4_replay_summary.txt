@@ -1,0 +1,31 @@
+﻿# Q4 Transcript Replay — Historical Results
+
+**Mode:** Incremental text transcript replay
+**ASR:** Not used in this mode
+**Nudge generation:** Rule-based signal detection
+
+## Historical scenario results
+
+The earlier transcript-replay run covered payment difficulty, rising frustration, callback requests, compliance gaps, missed cross-sell opportunities, and normal conversation.
+
+The historical run reported all six predefined scenarios as passing. Re-run the current scenario runner to verify the current checkout.
+
+## Latency scope
+
+The measurements associated with this transcript-replay mode cover local text processing only. They exclude audio capture, ASR, audio transport, and dashboard delivery.
+
+For prerecorded audio replay and its component timings, use:
+
+- `audio_replay_results.json`
+
+For incremental transcript-replay measurements, use:
+
+- `live_replay_results.json`
+
+These are different execution modes and must not be compared as equivalent end-to-end latency measurements.
+
+## Limitations
+
+- This file describes transcript replay, not live microphone or telephony capture.
+- Keyword-based detection may miss paraphrases or produce false positives.
+- Historical results are evidence of a specific run, not a guarantee of current behavior or production accuracy.

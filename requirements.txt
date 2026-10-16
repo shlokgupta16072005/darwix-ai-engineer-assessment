@@ -1,0 +1,14 @@
+﻿# Voice agent and API client
+openai
+python-dotenv
+faster-whisper
+pyttsx3
+PyAudioWPatch
+
+# Knowledge base and retrieval
+pypdf
+pandas
+scikit-learn
+numpy
+joblib
+pytest

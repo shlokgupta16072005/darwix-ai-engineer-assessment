@@ -1,0 +1,19 @@
+﻿Q4 Latency Evidence
+===================
+
+The previous latency_results.txt contained an older measurement and is
+superseded by live_replay_results.json.
+
+Current source of truth:
+evidence/live_replay_results.json
+
+Measurement scope:
+Local incremental transcript processing only.
+Excludes microphone capture, ASR, audio transport, network communication,
+and dashboard delivery.
+
+The replay uses small sample sizes. The reported median and P95 values
+are preliminary local measurements, not production benchmarks or
+end-to-end latency.
+
+ASR was not used in these replay scenarios.

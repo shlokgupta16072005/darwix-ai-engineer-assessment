@@ -1,539 +1,108 @@
-# Darwix AI Engineer Assessment
+﻿# Darwix AI Engineer Assessment
 
-This repository contains my implementation of the Darwix AI Engineer Assessment.
+This repository contains four prototypes for the Darwix AI Engineer assessment.
 
-The assessment is organized into four components covering voice interaction, knowledge-base retrieval, multilingual support, and live information retrieval.
+## Project status
 
-> **Current status:** Q2 is implemented and tested. Q1, Q3, and Q4 are currently pending development.
-
----
-
-## Project Structure
-
-    Darwix AI/
-    ├── q1_voice_agent/
-    │   └── README.md
-    │
-    ├── q2_knowledge_base/
-    │   ├── data/
-    │   │   ├── application_process.txt
-    │   │   ├── eligibility_rules.pdf
-    │   │   ├── faq.txt
-    │   │   ├── loan_products.pdf
-    │   │   ├── objection_handling.txt
-    │   │   └── sample_application.csv
-    │   │
-    │   ├── docs/
-    │   │   └── q2_test_results.md
-    │   │
-    │   ├── ingestion/
-    │   │   ├── build_kb.py
-    │   │   ├── chunker.py
-    │   │   ├── cleaner.py
-    │   │   ├── document_loader.py
-    │   │   └── pii_detector.py
-    │   │
-    │   ├── retrieval/
-    │   │   ├── rag_answer.py
-    │   │   ├── search.py
-    │   │   ├── test_openai.py
-    │   │   ├── test_retrieval.py
-    │   │   └── vector_store.py
-    │   │
-    │   ├── screenshots/
-    │   ├── tests/
-    │   ├── README.md
-    │   └── requirements.txt
-    │
-    ├── q3_multilingual/
-    │   └── README.md
-    │
-    ├── q4_live_insights/
-    │   └── README.md
-    │
-    ├── recordings/
-    ├── docs/
-    ├── .env.example
-    ├── .gitignore
-    ├── README.md
-    └── requirements.txt
-
----
-
-## Assessment Status
-
-| Question | Component | Status |
+| Component | Current implementation | Important limitation |
 |---|---|---|
-| Q1 | Voice Agent | Pending |
-| Q2 | Knowledge Base / RAG System | Implemented and tested |
-| Q3 | Multilingual Support | Pending |
-| Q4 | Live Insights | Pending |
+| Q1 — Voice Agent | Local STT, conversation agent, local TTS, voice loop, and Q2 retrieval client | Validate the complete required call scenarios and recorded-call evidence |
+| Q2 — Knowledge Base | Document loading, cleaning, PII processing, chunking, retrieval, and RAG answer generation | The `ingestion/build_kb.py` entry point and three files in `tests/` are empty; use the implemented modules and retrieval tests |
+| Q3 — Multilingual | Rule-based Filipino and Indonesian text routing, localized responses, and unit tests | No demonstrated end-to-end multilingual ASR/TTS pipeline |
+| Q4 — Live Insights | Transcript replay, prerecorded WAV replay using Faster-Whisper, rule-based signals, nudge cooldowns, dashboard API, and tests | No demonstrated live microphone or telephony stream; latency results are prototype measurements |
 
-The four components are maintained in a single repository because they form one overall assessment.
+These are prototype status descriptions, not claims of production readiness or assessment scores.
 
----
+## Repository structure
 
-# Q1 — Voice Agent
+- `q1_voice_agent/` — voice-agent pipeline and tests
+- `q2_knowledge_base/` — ingestion, retrieval, source documents, and test evidence
+- `q3_multilingual/` — Filipino and Indonesian text bot prototype
+- `q4_live_insights/` — audio/transcript replay, signal detection, nudges, dashboard, tests, and evidence
+- `docs/` — assessment and supporting documentation
+- `requirements.txt` — root Python dependencies
+- `.env.example` — environment-variable template without real credentials
 
-**Status:** Pending
+## Setup
 
-The Q1 component will contain the voice-agent implementation required by the assessment.
+Use Python 3.10 or later. On Windows, run commands from the repository root in PowerShell.
 
-Planned location:
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
 
-    q1_voice_agent/
+Copy `.env.example` to a local `.env` only if you need the shared OpenAI configuration. Populate it with your own values. Do not commit real credentials.
 
-The implementation and documentation will be added as development progresses.
+Some modules load environment variables from component-specific `.env` files. Check each component's README and configuration before running it. The local Q1 demo client, Q3 text bot, and Q4 transcript replay can be tested without making a live telephony connection.
 
----
+## Running the components
 
-# Q2 — Knowledge Base / RAG System
+### Q1 — Voice Agent
 
-**Status:** Implemented and tested**
+See `q1_voice_agent/README.md` for architecture, configuration, and usage.
 
-Q2 implements a prototype knowledge-base and Retrieval-Augmented Generation (RAG) system for the business-loan qualification domain.
+The project includes local Faster-Whisper speech recognition, a conversation agent, local text-to-speech, and a retrieval client connected to Q2. Microphone use depends on compatible Windows audio hardware and PyAudioWPatch.
 
-The prototype uses a fictional lender named **NovaFin**.
+### Q2 — Knowledge Base / RAG
 
-NovaFin, its loan products, eligibility rules, sample applications, customer questions, and related business information are fictional data created specifically for this assessment prototype.
+See `q2_knowledge_base/README.md` for the ingestion pipeline, retrieval workflow, source documents, and evidence.
 
----
+The implemented retrieval modules include source-document loading, cleaning, PII processing, chunking, search, and RAG answer generation. The standalone `ingestion/build_kb.py` and three files in `q2_knowledge_base/tests/` are currently empty; do not rely on those files as runnable entry points or tests.
 
-## Q2 Pipeline
+### Q3 — Multilingual Support
 
-The implemented pipeline follows this flow:
+Run the text-based unit tests from the Q3 directory:
 
-    Raw Documents
-          |
-          v
-    Document Loading
-          |
-          v
-    Text Extraction
-          |
-          v
-    Cleaning and Normalization
-          |
-          v
-    PII Detection
-          |
-          v
-    Chunking
-          |
-          v
-    Metadata Creation
-          |
-          v
-    Vectorization
-          |
-          v
-    Local Vector Store
-          |
-          v
-    Similarity Retrieval
-          |
-          v
-    Retrieved Context
-          |
-          v
-    RAG Answer Generation
-          |
-          v
-    Answer + Source Attribution
+```powershell
+cd .\q3_multilingual
+python -m unittest discover -s tests -v
+cd ..
+```
 
----
+The prototype supports Filipino and Indonesian text interactions. It does not yet demonstrate integrated multilingual speech recognition and synthesis.
 
-## Q2 Source Dataset
+### Q4 — Live Insights
 
-A small and realistic source dataset was created instead of using a large external banking knowledge base.
+Run the Q4 unit tests:
 
-The dataset contains different types of information.
+```powershell
+cd .\q4_live_insights
+python -m unittest discover -s tests -v
+python .\samples\run_scenarios.py
+```
 
-### Loan Products
+To replay a prerecorded WAV file, provide its path explicitly:
 
-    q2_knowledge_base/data/loan_products.pdf
+```powershell
+python .\app\audio_replay.py --audio "PATH_TO_AUDIO.wav" --no-dashboard
+```
 
-Contains information such as:
+To launch the local dashboard in one terminal:
 
-- Business loan amount range
-- Loan tenure
-- Basic product eligibility
+```powershell
+python .\app\dashboard_server.py
+```
 
-### Eligibility Rules
+In a second terminal, activate the same virtual environment and run the audio replay without `--no-dashboard` to publish events to the dashboard.
 
-    q2_knowledge_base/data/eligibility_rules.pdf
+Audio replay uses overlapping chunks and Faster-Whisper. Chunk-level transcription may be inaccurate, and measurements from a short prerecorded clip are not proof of production real-time performance.
 
-Contains information such as:
+## Security and privacy
 
-- Minimum business vintage
-- Required applicant documents
-- Eligibility conditions
+- Never commit `.env` files, API keys, passwords, or customer personal information.
+- Use `.env.example` for placeholders only.
+- Use fictional or appropriately anonymized test data.
+- Review evidence, screenshots, transcripts, and audio before sharing them externally.
 
-### FAQ
+## Evidence and limitations
 
-    q2_knowledge_base/data/faq.txt
+Each component contains its own README and, where available, test output, scenario results, screenshots, or latency measurements. Treat generated evidence files as snapshots of specific runs, not universal performance guarantees.
 
-Contains common customer questions and answers.
+Before submission, verify that all required scenarios run from a clean environment, the evidence matches the current code, and the final repository includes setup instructions and a clear list of known limitations.
 
-### Objection Handling
+## Production improvements
 
-    q2_knowledge_base/data/objection_handling.txt
-
-Contains example customer objections and suggested responses.
-
-### Application Process
-
-    q2_knowledge_base/data/application_process.txt
-
-Contains information about the application and assessment process.
-
-### Sample Application Data
-
-    q2_knowledge_base/data/sample_application.csv
-
-Contains sample structured application records used to demonstrate handling of application data separately from the general knowledge base.
-
----
-
-## Q2 Document Ingestion
-
-The document loader supports the following source types:
-
-- TXT
-- PDF
-- CSV
-
-Implementation:
-
-    q2_knowledge_base/ingestion/document_loader.py
-
-The ingestion stage extracts usable text or structured content from source documents before further processing.
-
----
-
-## Q2 Data Cleaning
-
-The cleaning stage performs basic preprocessing before indexing.
-
-The implemented cleaning process includes:
-
-- Header and footer removal where applicable
-- Whitespace normalization
-- Duplicate-section removal
-- Terminology normalization
-- Removal of irrelevant repeated content
-
-Implementation:
-
-    q2_knowledge_base/ingestion/cleaner.py
-
-The goal is to keep the knowledge base focused on useful information rather than indexing navigation text, repeated sections, or unnecessary formatting.
-
----
-
-## Q2 PII Detection
-
-The pipeline includes a PII-detection stage before content is used for retrieval.
-
-Implementation:
-
-    q2_knowledge_base/ingestion/pii_detector.py
-
-The purpose is to identify potentially sensitive information in source data and reduce the risk of exposing sensitive information through the retrieval pipeline.
-
----
-
-## Q2 Chunking
-
-Cleaned documents are divided into smaller chunks before vectorization.
-
-Implementation:
-
-    q2_knowledge_base/ingestion/chunker.py
-
-The resulting chunks contain metadata identifying their source document and information needed for retrieval and source attribution.
-
-The current source dataset produces a total of 36 chunks before application-data exclusion from the general knowledge-base index.
-
----
-
-## Q2 Vector Retrieval
-
-The prototype uses a local TF-IDF based vector representation with cosine similarity.
-
-Implementation:
-
-    q2_knowledge_base/retrieval/vector_store.py
-
-and:
-
-    q2_knowledge_base/retrieval/search.py
-
-The retrieval process:
-
-1. Converts knowledge-base chunks into TF-IDF vectors.
-2. Converts the user query into the same vector space.
-3. Calculates cosine similarity.
-4. Retrieves the most relevant chunks.
-5. Passes the retrieved context to the answer-generation layer.
-
-The generated vector-store artifacts are kept local and excluded from Git using `.gitignore`.
-
----
-
-## Q2 Retrieval Evaluation
-
-A retrieval test suite was created to verify that representative questions retrieve the intended knowledge.
-
-The evaluation covers:
-
-1. Minimum business vintage
-2. Required application documents
-3. Loan amount range
-4. Interest-rate objections
-5. One-year business eligibility
-
-Current local evaluation:
-
-**5 / 5 intended retrieval tests passed**
-
-This is a prototype evaluation against the created dataset. It should not be interpreted as a production benchmark or real-world model accuracy measurement.
-
-Detailed results:
-
-    q2_knowledge_base/docs/q2_test_results.md
-
----
-
-## Q2 RAG Answer Generation
-
-The RAG answer layer uses retrieved context to generate grounded responses.
-
-Implementation:
-
-    q2_knowledge_base/retrieval/rag_answer.py
-
-The answer-generation layer is designed to:
-
-- Use retrieved knowledge as context
-- Provide source attribution
-- Avoid inventing unsupported information
-- State when information is unavailable
-- Handle questions requiring information outside the knowledge base
-- Avoid presenting unavailable live information as known facts
-
----
-
-## Q2 Example Test Cases
-
-### Business Vintage
-
-Question:
-
-    What is the minimum business vintage required?
-
-The prototype knowledge base specifies:
-
-    24 months
-
-### Required Documents
-
-Question:
-
-    What documents are required?
-
-The system retrieves eligibility information covering:
-
-- Identity documentation
-- PAN or tax identification
-- Business proof or registration
-- Recent bank statements or financial records
-
-### Live Interest Rate
-
-Question:
-
-    What is today's interest rate?
-
-The prototype does not contain a live pricing feed.
-
-The system therefore avoids inventing a current rate and indicates that live pricing information is unavailable in the current knowledge base.
-
-### One-Year Business
-
-Question:
-
-    My business is only one year old. Can I qualify?
-
-The system retrieves the minimum business-vintage requirement and explains that a one-year business does not meet the 24-month requirement in the prototype dataset.
-
-### Interest-Rate Objection
-
-Question:
-
-    The interest rate is too high. What should I do?
-
-The system retrieves the objection-handling guidance and provides a response based on customer-specific pricing and assessment rather than promising a lower rate.
-
----
-
-## Q2 Interactive Mode
-
-An interactive RAG mode is included.
-
-It allows a user to enter questions and receive answers based on retrieved knowledge-base context.
-
-Screenshots demonstrating the implementation are available under:
-
-    q2_knowledge_base/screenshots/
-
----
-
-## Q2 Testing
-
-The Q2 implementation includes tests for:
-
-- Cleaning
-- Chunking
-- Retrieval
-
-Test files are located under:
-
-    q2_knowledge_base/tests/
-
-Additional retrieval and RAG evaluation scripts are available under:
-
-    q2_knowledge_base/retrieval/
-
----
-
-# Q3 — Multilingual Support
-
-**Status:** Pending
-
-The Q3 component will contain the multilingual functionality required by the assessment.
-
-Planned location:
-
-    q3_multilingual/
-
-The implementation and documentation will be added as development progresses.
-
----
-
-# Q4 — Live Insights
-
-**Status:** Pending
-
-The Q4 component will contain the live-insights functionality required by the assessment.
-
-Planned location:
-
-    q4_live_insights/
-
-The implementation and documentation will be added as development progresses.
-
----
-
-# Environment Setup
-
-The project uses environment variables for configuration where required.
-
-A template is provided at:
-
-    .env.example
-
-The Q2 component also contains:
-
-    q2_knowledge_base/.env.example
-
-Example configuration:
-
-    OPENAI_API_KEY=your_api_key_here
-    OPENAI_MODEL=gpt-4o-mini
-
-Replace the placeholder API key locally when required.
-
-**Never commit a real API key or other secret to the repository.**
-
-Actual `.env` files are excluded through `.gitignore`.
-
----
-
-# Running Q2
-
-From the project root:
-
-    cd q2_knowledge_base
-
-The Q2 ingestion pipeline is available under:
-
-    ingestion/
-
-The retrieval and RAG components are available under:
-
-    retrieval/
-
-Tests are available under:
-
-    tests/
-
-Detailed Q2 implementation and test information is documented in:
-
-    docs/q2_test_results.md
-
----
-
-# Repository Security
-
-The repository intentionally excludes local secrets and generated artifacts.
-
-The `.gitignore` configuration excludes items such as:
-
-    .env
-    .venv/
-    __pycache__/
-    vector_store/
-
-The repository contains `.env.example` files instead of real API credentials.
-
----
-
-# Documentation
-
-Detailed Q2 documentation:
-
-    q2_knowledge_base/docs/q2_test_results.md
-
-Q2 screenshots:
-
-    q2_knowledge_base/screenshots/
-
-Q2 component documentation:
-
-    q2_knowledge_base/README.md
-
----
-
-# Development Status
-
-This repository is being developed incrementally as a single Darwix AI Engineer Assessment project.
-
-Current implementation status:
-
-    Q1  → Pending
-    Q2  → Implemented and tested
-    Q3  → Pending
-    Q4  → Pending
-
-The status will be updated as the remaining assessment components are implemented.
-
----
-
-# Disclaimer
-
-This repository is an assessment prototype.
-
-The NovaFin lender, loan products, eligibility rules, sample application records, and other business information used in Q2 are fictional and illustrative.
-
-They must not be interpreted as real financial products, real lender policies, or financial advice.
+Potential next steps include stronger automated tests, calibrated signal confidence, better multilingual and noisy-audio evaluation, real streaming ASR, live audio/telephony integration, authentication and access controls for the dashboard, and reproducible latency and load testing.

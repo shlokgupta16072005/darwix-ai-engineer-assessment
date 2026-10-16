@@ -1,0 +1,59 @@
+{
+  "mode": "chunked_prerecorded_audio_replay",
+  "asr_used": true,
+  "asr_provider": "Faster-Whisper",
+  "asr_model": "base.en",
+  "device": "cpu",
+  "audio_file": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q1_voice_agent\\transcripts\\temp_audio.wav",
+  "audio_duration_seconds": 4.992,
+  "playback_speed": 1.0,
+  "chunk_seconds": 4.0,
+  "overlap_seconds": 0.5,
+  "chunks_processed": 2,
+  "signals_emitted": [],
+  "elapsed_wall_seconds": 5.315,
+  "asr_latency_ms": {
+    "median": 1155.719,
+    "p50": 1122.236,
+    "p95": 1189.202
+  },
+  "signal_latency_ms": {
+    "median": 1.224,
+    "p50": 0.139,
+    "p95": 2.31
+  },
+  "dashboard_delivery_latency_ms": {
+    "median": 0.001,
+    "p50": 0.001,
+    "p95": 0.001
+  },
+  "latency_scope": "ASR and local signal processing are measured separately. Dashboard delivery is measured separately. These are not a validated live-telephony end-to-end latency measurement.",
+  "events": [
+    {
+      "chunk": 1,
+      "audio_start_seconds": 0.0,
+      "audio_end_seconds": 4.0,
+      "partial_transcript": "What is today's interest rate?",
+      "chunk_transcript": "What is today's interest rate?",
+      "detected_signals": [],
+      "nudges": [],
+      "asr_latency_ms": 1189.202,
+      "signal_latency_ms": 2.31,
+      "chunk_latency_ms": 1191.512,
+      "audio_chunk_duration_seconds": 4.0
+    },
+    {
+      "chunk": 2,
+      "audio_start_seconds": 3.5,
+      "audio_end_seconds": 4.992,
+      "partial_transcript": "What is today's interest rate?",
+      "chunk_transcript": "",
+      "detected_signals": [],
+      "nudges": [],
+      "asr_latency_ms": 1122.236,
+      "signal_latency_ms": 0.139,
+      "chunk_latency_ms": 1122.374,
+      "audio_chunk_duration_seconds": 1.492
+    }
+  ]
+}

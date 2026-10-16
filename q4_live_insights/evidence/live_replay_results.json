@@ -1,0 +1,209 @@
+{
+  "Payment difficulty, frustration and callback": {
+    "mode": "real_time_speed_text_replay",
+    "asr_used": false,
+    "chunks_processed": 5,
+    "signals_emitted": [
+      "callback_needed",
+      "payment_difficulty",
+      "rising_frustration"
+    ],
+    "latency_ms": {
+      "median": 0.793,
+      "p50": 0.793,
+      "p95": 1.693,
+      "measurement_scope": "local transcript processing only; excludes ASR, audio transport, network and dashboard delivery"
+    },
+    "events": [
+      {
+        "chunk": 1,
+        "partial_transcript": "Hello, I am calling about my payment.",
+        "detected_signals": [],
+        "nudges": [],
+        "processing_ms": 0.019,
+        "chunk_latency_ms": 1.693
+      },
+      {
+        "chunk": 2,
+        "partial_transcript": "Hello, I am calling about my payment. I cannot afford the payment this month.",
+        "detected_signals": [
+          "payment_difficulty"
+        ],
+        "nudges": [
+          {
+            "signal": "payment_difficulty",
+            "priority": "medium",
+            "confidence": 1.0,
+            "nudge": "Explore approved payment-support options or offer a human callback.",
+            "method": "keyword_rule",
+            "created_at": "2026-10-15T05:15:16.307188+00:00"
+          }
+        ],
+        "processing_ms": 0.094,
+        "chunk_latency_ms": 0.637
+      },
+      {
+        "chunk": 3,
+        "partial_transcript": "Hello, I am calling about my payment. I cannot afford the payment this month. This is frustrating and you are not",
+        "detected_signals": [
+          "rising_frustration"
+        ],
+        "nudges": [
+          {
+            "signal": "rising_frustration",
+            "priority": "high",
+            "confidence": 1.0,
+            "nudge": "Acknowledge the customer's concern, listen carefully, and respond calmly.",
+            "method": "keyword_rule",
+            "created_at": "2026-10-15T05:15:16.437986+00:00"
+          }
+        ],
+        "processing_ms": 0.09,
+        "chunk_latency_ms": 0.699
+      },
+      {
+        "chunk": 4,
+        "partial_transcript": "Hello, I am calling about my payment. I cannot afford the payment this month. This is frustrating and you are not listening. Please call me back so I",
+        "detected_signals": [
+          "callback_needed"
+        ],
+        "nudges": [
+          {
+            "signal": "callback_needed",
+            "priority": "high",
+            "confidence": 1.0,
+            "nudge": "Arrange a human follow-up according to the approved workflow.",
+            "method": "keyword_rule",
+            "created_at": "2026-10-15T05:15:16.544411+00:00"
+          }
+        ],
+        "processing_ms": 0.078,
+        "chunk_latency_ms": 0.793
+      },
+      {
+        "chunk": 5,
+        "partial_transcript": "Hello, I am calling about my payment. I cannot afford the payment this month. This is frustrating and you are not listening. Please call me back so I can speak to a human.",
+        "detected_signals": [],
+        "nudges": [],
+        "processing_ms": 0.034,
+        "chunk_latency_ms": 0.965
+      }
+    ]
+  },
+  "Compliance gap": {
+    "mode": "real_time_speed_text_replay",
+    "asr_used": false,
+    "chunks_processed": 2,
+    "signals_emitted": [
+      "compliance_gap"
+    ],
+    "latency_ms": {
+      "median": 0.644,
+      "p50": 0.457,
+      "p95": 0.831,
+      "measurement_scope": "local transcript processing only; excludes ASR, audio transport, network and dashboard delivery"
+    },
+    "events": [
+      {
+        "chunk": 1,
+        "partial_transcript": "The agent guaranteed approval without telling the",
+        "detected_signals": [
+          "compliance_gap"
+        ],
+        "nudges": [
+          {
+            "signal": "compliance_gap",
+            "priority": "high",
+            "confidence": 1.0,
+            "nudge": "Check the required disclosure before proceeding. Do not promise guaranteed approval or pricing.",
+            "method": "keyword_rule",
+            "created_at": "2026-10-15T05:15:16.670488+00:00"
+          }
+        ],
+        "processing_ms": 0.063,
+        "chunk_latency_ms": 0.457
+      },
+      {
+        "chunk": 2,
+        "partial_transcript": "The agent guaranteed approval without telling the customer about the required disclosure.",
+        "detected_signals": [],
+        "nudges": [],
+        "processing_ms": 0.044,
+        "chunk_latency_ms": 0.831
+      }
+    ]
+  },
+  "Missed cross-sell": {
+    "mode": "real_time_speed_text_replay",
+    "asr_used": false,
+    "chunks_processed": 2,
+    "signals_emitted": [
+      "missed_cross_sell"
+    ],
+    "latency_ms": {
+      "median": 0.587,
+      "p50": 0.568,
+      "p95": 0.607,
+      "measurement_scope": "local transcript processing only; excludes ASR, audio transport, network and dashboard delivery"
+    },
+    "events": [
+      {
+        "chunk": 1,
+        "partial_transcript": "The customer mentioned a second vehicle and",
+        "detected_signals": [
+          "missed_cross_sell"
+        ],
+        "nudges": [
+          {
+            "signal": "missed_cross_sell",
+            "priority": "medium",
+            "confidence": 1.0,
+            "nudge": "Check whether an approved multi-vehicle offer is relevant to the customer's needs.",
+            "method": "keyword_rule",
+            "created_at": "2026-10-15T05:15:16.787492+00:00"
+          }
+        ],
+        "processing_ms": 0.112,
+        "chunk_latency_ms": 0.607
+      },
+      {
+        "chunk": 2,
+        "partial_transcript": "The customer mentioned a second vehicle and another vehicle on the policy.",
+        "detected_signals": [],
+        "nudges": [],
+        "processing_ms": 0.034,
+        "chunk_latency_ms": 0.568
+      }
+    ]
+  },
+  "Normal conversation": {
+    "mode": "real_time_speed_text_replay",
+    "asr_used": false,
+    "chunks_processed": 2,
+    "signals_emitted": [],
+    "latency_ms": {
+      "median": 0.592,
+      "p50": 0.49,
+      "p95": 0.694,
+      "measurement_scope": "local transcript processing only; excludes ASR, audio transport, network and dashboard delivery"
+    },
+    "events": [
+      {
+        "chunk": 1,
+        "partial_transcript": "Hello, thank you for calling. How can",
+        "detected_signals": [],
+        "nudges": [],
+        "processing_ms": 0.069,
+        "chunk_latency_ms": 0.694
+      },
+      {
+        "chunk": 2,
+        "partial_transcript": "Hello, thank you for calling. How can I help you today?",
+        "detected_signals": [],
+        "nudges": [],
+        "processing_ms": 0.029,
+        "chunk_latency_ms": 0.49
+      }
+    ]
+  }
+}

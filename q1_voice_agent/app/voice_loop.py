@@ -4,12 +4,12 @@ Local end-to-end voice loop for the Q1 voice agent.
 Pipeline:
 Microphone -> Local STT -> ConversationAgent -> Local TTS
 
-Uses DemoClient so the complete voice pipeline can be tested
-without OpenAI API credits.
+Uses the Q2 RAGClient so voice responses are grounded
+in the NovaFin knowledge base.
 """
 
 from q1_voice_agent.app.agent import ConversationAgent
-from q1_voice_agent.app.demo_client import DemoClient
+from q1_voice_agent.app.rag_client import RAGClient
 from q1_voice_agent.app.local_stt import LocalSTT
 from q1_voice_agent.app.local_tts import LocalTTS
 from q1_voice_agent.app.microphone import MicrophoneInput
@@ -26,7 +26,7 @@ class LocalVoiceLoop:
         self.stt = LocalSTT()
 
         self.agent = ConversationAgent(
-            client=DemoClient()
+            client=RAGClient()
         )
 
         self.tts = LocalTTS()
