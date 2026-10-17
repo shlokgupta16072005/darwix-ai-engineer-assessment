@@ -1,4 +1,4 @@
-from pathlib import Path
+﻿from pathlib import Path
 import sys
 import json
 
@@ -42,106 +42,138 @@ TEST_CASES = [
 def evaluate_test(test_case):
     results = search(test_case["query"], top_k=3)
 
-    combined_text = " ".join(
-        result["text"].lower()
-        for result in results
-    )
+    expected_source = Path(
+        test_case["expected_source"]
+    ).name.lower()
+    expected_keyword = test_case["expected_keyword"].lower()
+
+    retrieved = []
+
+    for result in results:
+        source = str(result.get("source", "unknown"))
+        text = str(result.get("text", ""))
+        source_match = (
+            Path(source.replace("\\", "/")).name.lower()
+            == expected_source
+        )
+        keyword_match = expected_keyword in text.lower()
+
+        retrieved.append({
+            "rank": result.get("rank"),
+            "chunk_id": result.get("chunk_id"),
+            "source": source,
+            "category": result.get("category"),
+            "adjusted_score": round(float(result["score"]), 4),
+            "raw_tfidf_score": round(float(result["raw_score"]), 4),
+            "text": text,
+            "expected_source_match": source_match,
+            "expected_keyword_in_chunk": keyword_match,
+        })
 
     source_found = any(
-        test_case["expected_source"].lower() in result["source"].lower()
-        for result in results
+        item["expected_source_match"] for item in retrieved
+    )
+    keyword_found = any(
+        item["expected_keyword_in_chunk"] for item in retrieved
+    )
+    top1_source_match = bool(
+        retrieved and retrieved[0]["expected_source_match"]
     )
 
-    keyword_found = test_case["expected_keyword"].lower() in combined_text
+    expected_source_rank = next(
+        (
+            item["rank"]
+            for item in retrieved
+            if item["expected_source_match"]
+        ),
+        None,
+    )
 
-    passed = source_found and keyword_found
+    if source_found and keyword_found:
+        verdict = "PASS"
+        explanation = (
+            "The expected source and keyword appear in the top three. "
+            "This is a rule-based match; semantic relevance still requires review."
+        )
+    elif source_found or keyword_found:
+        verdict = "REVIEW"
+        explanation = (
+            "Only one of the expected-source and keyword checks passed. "
+            "Inspect the retrieved evidence."
+        )
+    else:
+        verdict = "FAIL"
+        explanation = (
+            "Neither the expected source nor the expected keyword was found "
+            "in the top three."
+        )
 
     return {
         "query": test_case["query"],
         "expected_source": test_case["expected_source"],
         "expected_keyword": test_case["expected_keyword"],
-        "top_result": results[0]["source"],
-        "top_score": round(results[0]["score"], 4),
+        "top_result": retrieved[0]["source"] if retrieved else None,
+        "top_score": retrieved[0]["adjusted_score"] if retrieved else None,
+        "top1_source_match": top1_source_match,
+        "expected_source_rank_in_top_3": expected_source_rank,
         "source_found_in_top_3": source_found,
         "keyword_found_in_top_3": keyword_found,
-        "result": "PASS" if passed else "REVIEW",
+        "retrieved_evidence": retrieved,
+        "relevance_explanation": explanation,
+        "verdict_basis": "rule_based_smoke_test_not_human_judgment",
+        "result": verdict,
     }
 
 
 def main():
-    print("=" * 80)
-    print("Q2 KNOWLEDGE BASE - RETRIEVAL EVALUATION")
-    print("=" * 80)
-
-    evaluation_results = []
-
-    for index, test_case in enumerate(TEST_CASES, start=1):
-        print(f"\nTest {index}/{len(TEST_CASES)}")
-        print(f"Query: {test_case['query']}")
-
-        result = evaluate_test(test_case)
-        evaluation_results.append(result)
-
-        print(f"Expected source: {result['expected_source']}")
-        print(f"Top result:      {result['top_result']}")
-        print(f"Top score:       {result['top_score']}")
-        print(f"Source in top 3: {result['source_found_in_top_3']}")
-        print(f"Keyword in top 3:{result['keyword_found_in_top_3']}")
-        print(f"Result:          {result['result']}")
-
-    passed = sum(
-        result["result"] == "PASS"
-        for result in evaluation_results
-    )
+    evaluation_results = [
+        evaluate_test(test_case) for test_case in TEST_CASES
+    ]
 
     total = len(evaluation_results)
+    passed = sum(r["result"] == "PASS" for r in evaluation_results)
+    reviewed = sum(r["result"] == "REVIEW" for r in evaluation_results)
+    failed = sum(r["result"] == "FAIL" for r in evaluation_results)
+    top1_matches = sum(r["top1_source_match"] for r in evaluation_results)
 
-    print("\n" + "=" * 80)
-    print("EVALUATION SUMMARY")
-    print("=" * 80)
-
-    print(f"Tests passed: {passed}/{total}")
-
-    print("\n" + "-" * 80)
-    print(f"{'Query':<50} {'Top Source':<25} {'Result'}")
-    print("-" * 80)
-
-    for result in evaluation_results:
-        query = result["query"]
-
-        if len(query) > 47:
-            query = query[:44] + "..."
-
-        source = result["top_result"]
-
-        if len(source) > 22:
-            source = source[:19] + "..."
-
-        print(
-            f"{query:<50} "
-            f"{source:<25} "
-            f"{result['result']}"
-        )
-
-    print("-" * 80)
+    summary = {
+        "evaluation_type": "small_prototype_retrieval_smoke_test",
+        "total_tests": total,
+        "passed_tests": passed,
+        "review_tests": reviewed,
+        "failed_tests": failed,
+        "top1_expected_source_matches": top1_matches,
+        "top1_source_match_rate": round(top1_matches / total, 4) if total else 0,
+        "note": (
+            "Rule-based checks are not human relevance judgments or a "
+            "production retrieval-accuracy benchmark."
+        ),
+        "results": evaluation_results,
+    }
 
     output_path = PROJECT_ROOT / "retrieval" / "retrieval_test_results.json"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(output_path, "w", encoding="utf-8") as file:
-        json.dump(
-            {
-                "total_tests": total,
-                "passed_tests": passed,
-                "results": evaluation_results,
-            },
-            file,
-            indent=4,
+    with output_path.open("w", encoding="utf-8") as file:
+        json.dump(summary, file, indent=4, ensure_ascii=False)
+
+    for index, result in enumerate(evaluation_results, start=1):
+        print(
+            f"Test {index}: {result['result']} | "
+            f"top={result['top_result']} | "
+            f"expected source rank={result['expected_source_rank_in_top_3']}"
         )
+        for evidence in result["retrieved_evidence"]:
+            print(
+                f"  Rank {evidence['rank']} | "
+                f"chunk_id={evidence['chunk_id']} | "
+                f"source={evidence['source']} | "
+                f"score={evidence['adjusted_score']}"
+            )
 
-    print(f"\nResults saved to:")
-    print(output_path)
-
-    print("\nRETRIEVAL EVALUATION COMPLETE")
+    print(f"\nTests: {total}; PASS: {passed}; REVIEW: {reviewed}; FAIL: {failed}")
+    print(f"Top-1 expected-source matches: {top1_matches}/{total}")
+    print(f"Saved: {output_path}")
 
 
 if __name__ == "__main__":
