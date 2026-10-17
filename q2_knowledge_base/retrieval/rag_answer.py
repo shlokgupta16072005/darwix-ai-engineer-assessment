@@ -497,25 +497,101 @@ def fallback_answer(
             "documents",
             "paperwork",
             "required papers",
-        ]
+        ],
     ):
-
-        document_sentences = (
-            extract_document_information(
-                results
-            )
+        document_text = " ".join(
+            result.get("text", "")
+            for result in results
         )
+        document_text_lower = document_text.lower()
 
-        if document_sentences:
+        # Handle incomplete-document concerns before listing requirements.
+        incomplete_document_phrases = [
+            "don't have",
+            "do not have",
+            "missing",
+            "don't have all",
+            "do not have all",
+            "not have all",
+            "incomplete",
+        ]
 
-            selected = document_sentences[:4]
+        if any(
+            phrase in question_lower
+            for phrase in incomplete_document_phrases
+        ):
+            if (
+                "additional documents can be requested"
+                in document_text_lower
+                or "additional documents may be requested"
+                in document_text_lower
+            ):
+                return (
+                    "That's okay for the initial conversation. "
+                    "Let me identify which information you already have "
+                    "and which items may still be required. "
+                    "Additional documents can be requested during assessment."
+                )
 
             return (
-                "Typical requirements mentioned in the "
-                "knowledge base include: "
-                + " ".join(selected)
+                "Let me identify which information you already have "
+                "and which items may still be required. "
+                "I can arrange human follow-up if you need help "
+                "confirming the documentation."
             )
 
+        requirements = []
+
+        if (
+            "identity proof" in document_text_lower
+            or "government-issued identity" in document_text_lower
+        ):
+            requirements.append("identity proof")
+
+        if (
+            "pan" in document_text_lower
+            or "tax identification" in document_text_lower
+        ):
+            requirements.append(
+                "PAN or applicable tax identification information"
+            )
+
+        if (
+            "business proof" in document_text_lower
+            or "business existence" in document_text_lower
+            or "registration" in document_text_lower
+        ):
+            requirements.append(
+                "business proof or registration, where applicable"
+            )
+
+        if (
+            "bank statement" in document_text_lower
+            or "financial record" in document_text_lower
+        ):
+            requirements.append(
+                "recent business bank statements or other requested financial records"
+            )
+
+        if requirements:
+            answer = (
+                "Typical requirements mentioned in the knowledge base include "
+                + ", ".join(requirements)
+                + "."
+            )
+
+            if (
+                "additional documents may be requested"
+                in document_text_lower
+                or "additional documents can be requested"
+                in document_text_lower
+            ):
+                answer += (
+                    " Additional documents may be requested "
+                    "depending on the application."
+                )
+
+            return answer
 
     # ========================================================
     # INTEREST RATE / PRICING

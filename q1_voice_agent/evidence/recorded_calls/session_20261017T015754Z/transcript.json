@@ -1,0 +1,78 @@
+{
+  "project": "Darwix AI Engineer Assessment - Q1",
+  "session_started_utc": "2026-10-17T01:57:54.039405+00:00",
+  "pipeline": [
+    "microphone",
+    "local_stt",
+    "q2_rag",
+    "local_tts"
+  ],
+  "turns": [
+    {
+      "turn": 1,
+      "timestamp_utc": "2026-10-17T01:58:09.767946+00:00",
+      "customer_transcript": "For documents are required to apply for a business loan.",
+      "assistant_response": "Typical requirements mentioned in the knowledge base include identity proof, PAN or applicable tax identification information, business proof or registration, where applicable, recent business bank statements or other requested financial records. Additional documents may be requested depending on the application.",
+      "status": "completed",
+      "customer_audio": "turn_01_customer.wav",
+      "assistant_audio": "turn_01_assistant.wav",
+      "rag_mode": "local_fallback",
+      "sources": [
+        {
+          "source": "application_process.txt",
+          "category": "application_process",
+          "score": 0.22339498419276413
+        },
+        {
+          "source": "eligibility_rules.pdf",
+          "category": "eligibility",
+          "score": 0.20505772899426117
+        },
+        {
+          "source": "faq.txt",
+          "category": "faq",
+          "score": 0.18407827804746157
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "timestamp_utc": "2026-10-17T01:58:22.053333+00:00",
+      "customer_transcript": "I don't have all the government on my documents right now",
+      "assistant_response": "That's okay for the initial conversation. Let me identify which information you already have and which items may still be required. Additional documents can be requested during assessment.",
+      "status": "completed",
+      "customer_audio": "turn_02_customer.wav",
+      "assistant_audio": "turn_02_assistant.wav",
+      "rag_mode": "local_fallback",
+      "sources": [
+        {
+          "source": "faq.txt",
+          "category": "faq",
+          "score": 0.2711711378805489
+        },
+        {
+          "source": "faq.txt",
+          "category": "faq",
+          "score": 0.262076712667422
+        },
+        {
+          "source": "application_process.txt",
+          "category": "application_process",
+          "score": 0.20340534935927224
+        }
+      ]
+    },
+    {
+      "turn": 3,
+      "timestamp_utc": "2026-10-17T01:58:29.169352+00:00",
+      "customer_transcript": "I'd like to speak to our human representative.",
+      "assistant_response": "I can flag your request for human follow-up. This prototype does not automatically place a callback or connect you to a representative.",
+      "status": "completed",
+      "customer_audio": "turn_03_customer.wav",
+      "assistant_audio": "turn_03_assistant.wav",
+      "rag_mode": "human_escalation_requested",
+      "sources": []
+    }
+  ],
+  "session_updated_utc": "2026-10-17T01:58:29.169402+00:00"
+}
