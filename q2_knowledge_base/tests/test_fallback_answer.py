@@ -95,3 +95,28 @@ def test_empty_retrieval_uses_safe_fallback():
 
     assert "could not find relevant information" in answer
     assert "human representative" in answer
+
+
+def test_stock_market_question_uses_safe_fallback(results):
+    answer = fallback_answer(
+        "Can you tell me tomorrow's stock market closing?",
+        results,
+    ).lower()
+
+    assert "could not find this information" in answer
+    assert "human" in answer
+
+
+def test_unrelated_question_with_high_scores_uses_safe_fallback(results):
+    high_scoring_results = [
+        {**item, "score": 0.8, "raw_score": 0.6}
+        for item in results
+    ]
+
+    answer = fallback_answer(
+        "Can you tell me tomorrow's stock market closing?",
+        high_scoring_results,
+    ).lower()
+
+    assert "could not find this information" in answer
+    assert "human" in answer

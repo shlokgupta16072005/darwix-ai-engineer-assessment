@@ -711,6 +711,24 @@ def fallback_answer(
         )
 
 
+    # Reject clearly out-of-domain questions before generic extraction.
+    # Specific loan-answer rules above this point remain unchanged.
+    loan_domain_terms = (
+        "loan", "business", "borrow", "lending", "lender",
+        "interest rate", "pricing", "emi", "repayment",
+        "document", "paperwork", "bank statement", "eligibility",
+        "eligible", "qualify", "qualification", "application",
+        "apply", "pan", "tenure", "approval", "callback",
+        "human representative",
+    )
+
+    if not any(term in question_lower for term in loan_domain_terms):
+        return (
+            "I could not find this information in the "
+            "knowledge base. I can arrange human "
+            "follow-up for this question."
+        )
+
     # ========================================================
     # GENERIC EXTRACTIVE FALLBACK
     # ========================================================
