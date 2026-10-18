@@ -1,0 +1,94 @@
+{
+  "project": "Darwix AI Engineer Assessment - Q1",
+  "session_started_utc": "2026-10-17T20:02:33.538864+00:00",
+  "pipeline": [
+    "microphone",
+    "local_stt",
+    "q2_rag",
+    "local_tts"
+  ],
+  "turns": [
+    {
+      "turn": 1,
+      "timestamp_utc": "2026-10-17T20:02:48.999787+00:00",
+      "customer_transcript": "What documents are required to apply for a business store?",
+      "assistant_response": "Typical requirements mentioned in the knowledge base include identity proof, PAN or applicable tax identification information, business proof or registration, where applicable, recent business bank statements or other requested financial records. Additional documents may be requested depending on the application.",
+      "status": "completed",
+      "customer_audio": "turn_01_customer.wav",
+      "assistant_audio": "turn_01_assistant.wav",
+      "rag_mode": "local_fallback",
+      "sources": [
+        {
+          "source": "faq.txt",
+          "category": "faq",
+          "score": 0.2564603473917353
+        },
+        {
+          "source": "application_process.txt",
+          "category": "application_process",
+          "score": 0.22389407546017234
+        },
+        {
+          "source": "eligibility_rules.pdf",
+          "category": "eligibility",
+          "score": 0.19743557640224452
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "timestamp_utc": "2026-10-17T20:03:00.829093+00:00",
+      "customer_transcript": "The address rate seems too high, why should I consider this low?",
+      "assistant_response": "I could not find this information in the knowledge base. I can arrange human follow-up for this question.",
+      "status": "completed",
+      "customer_audio": "turn_02_customer.wav",
+      "assistant_audio": "turn_02_assistant.wav",
+      "rag_mode": "local_fallback",
+      "sources": [
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.3800540854335665
+        },
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.17647807218362171
+        },
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.17310225516917965
+        }
+      ]
+    },
+    {
+      "turn": 3,
+      "timestamp_utc": "2026-10-17T20:03:11.131587+00:00",
+      "customer_transcript": "Can you tell me tomorrow's stock market closing?",
+      "assistant_response": "I could not find this information in the knowledge base. I can arrange human follow-up for this question.",
+      "status": "completed",
+      "customer_audio": "turn_03_customer.wav",
+      "assistant_audio": "turn_03_assistant.wav",
+      "rag_mode": "local_fallback",
+      "sources": [
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.16624063814057413
+        },
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.07482167713548538
+        },
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.05852045203401358
+        }
+      ]
+    }
+  ],
+  "session_updated_utc": "2026-10-17T20:03:11.131641+00:00"
+}

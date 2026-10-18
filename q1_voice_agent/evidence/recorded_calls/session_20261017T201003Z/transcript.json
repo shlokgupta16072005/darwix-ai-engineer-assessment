@@ -1,0 +1,94 @@
+{
+  "project": "Darwix AI Engineer Assessment - Q1",
+  "session_started_utc": "2026-10-17T20:10:03.303333+00:00",
+  "pipeline": [
+    "microphone",
+    "local_stt",
+    "q2_rag",
+    "local_tts"
+  ],
+  "turns": [
+    {
+      "turn": 1,
+      "timestamp_utc": "2026-10-17T20:10:16.995079+00:00",
+      "customer_transcript": "The interest rate seems too high, but should I consider?",
+      "assistant_response": "I understand that pricing is an important part of the decision. The final pricing is customer-specific and depends on the application and assessment. I can help collect the details needed for an assessment, or arrange a callback if you want to discuss pricing with a representative.",
+      "status": "completed",
+      "customer_audio": "turn_01_customer.wav",
+      "assistant_audio": "turn_01_assistant.wav",
+      "rag_mode": "local_fallback",
+      "sources": [
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.42199824406837977
+        },
+        {
+          "source": "faq.txt",
+          "category": "faq",
+          "score": 0.16903418917893326
+        },
+        {
+          "source": "faq.txt",
+          "category": "faq",
+          "score": 0.16743805351216462
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "timestamp_utc": "2026-10-17T20:10:28.512820+00:00",
+      "customer_transcript": "The interest rate seems to be high but should I consider?",
+      "assistant_response": "I understand that pricing is an important part of the decision. The final pricing is customer-specific and depends on the application and assessment. I can help collect the details needed for an assessment, or arrange a callback if you want to discuss pricing with a representative.",
+      "status": "completed",
+      "customer_audio": "turn_02_customer.wav",
+      "assistant_audio": "turn_02_assistant.wav",
+      "rag_mode": "local_fallback",
+      "sources": [
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.2736956131172915
+        },
+        {
+          "source": "faq.txt",
+          "category": "faq",
+          "score": 0.19831901003525115
+        },
+        {
+          "source": "faq.txt",
+          "category": "faq",
+          "score": 0.19114082707266677
+        }
+      ]
+    },
+    {
+      "turn": 3,
+      "timestamp_utc": "2026-10-17T20:10:40.187843+00:00",
+      "customer_transcript": "The address rate seems too high, but should I consider this low?",
+      "assistant_response": "I could not find this information in the knowledge base. I can arrange human follow-up for this question.",
+      "status": "completed",
+      "customer_audio": "turn_03_customer.wav",
+      "assistant_audio": "turn_03_assistant.wav",
+      "rag_mode": "local_fallback",
+      "sources": [
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.3632493850943607
+        },
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.20273787518669004
+        },
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.17225931411666268
+        }
+      ]
+    }
+  ],
+  "session_updated_utc": "2026-10-17T20:10:40.187883+00:00"
+}
