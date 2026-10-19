@@ -213,4 +213,3 @@ class VoiceBot:
             return self.config.fallback_message
 
         return self.config.fallback_message
-
