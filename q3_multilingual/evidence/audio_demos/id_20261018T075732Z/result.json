@@ -1,0 +1,20 @@
+{
+  "language": "id",
+  "country": "Indonesia",
+  "input_audio": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q3_multilingual\\indonesian_documents.mp3",
+  "whisper_model": "base",
+  "whisper_language": "id",
+  "raw_transcript": "Dokumen apa saja yang diperlukan?",
+  "normalized_transcript": "Dokumen apa saja yang diperlukan?",
+  "bot_response": "Dokumen yang biasanya diperlukan meliputi identitas, PAN atau identifikasi pajak yang berlaku, bukti usaha atau pendaftaran jika diperlukan, serta rekening koran bisnis terbaru atau dokumen keuangan lain yang diminta.",
+  "tts_engine": "edge-tts",
+  "tts_voice": "id-ID-GadisNeural",
+  "output_audio": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q3_multilingual\\evidence\\audio_demos\\id_20261018T075732Z\\assistant_response.mp3",
+  "timestamp_utc": "20261018T075732Z",
+  "limitations": [
+    "Prerecorded audio input; not a live microphone call.",
+    "Input language supplied explicitly.",
+    "Rule-based localized bot; not a generative conversation.",
+    "Edge TTS requires an internet connection."
+  ]
+}

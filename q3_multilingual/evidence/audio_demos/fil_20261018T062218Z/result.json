@@ -1,0 +1,20 @@
+{
+  "language": "fil",
+  "country": "Philippines",
+  "input_audio": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q3_multilingual\\filipino_documents.mp3",
+  "whisper_model": "base",
+  "whisper_language": "tl",
+  "raw_transcript": "ano ang mga dokumentong ka ilangan.",
+  "normalized_transcript": "ano ang mga dokumentong ka ilangan.",
+  "bot_response": "Pasensya na, hindi ko lubos na naintindihan. Maaari mo bang ulitin?",
+  "tts_engine": "edge-tts",
+  "tts_voice": "fil-PH-BlessicaNeural",
+  "output_audio": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q3_multilingual\\evidence\\audio_demos\\fil_20261018T062218Z\\assistant_response.mp3",
+  "timestamp_utc": "20261018T062218Z",
+  "limitations": [
+    "Prerecorded audio input; not a live microphone call.",
+    "Input language supplied explicitly.",
+    "Rule-based localized bot; not a generative conversation.",
+    "Edge TTS requires an internet connection."
+  ]
+}

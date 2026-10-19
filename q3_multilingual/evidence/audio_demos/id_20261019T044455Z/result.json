@@ -1,0 +1,20 @@
+{
+  "language": "id",
+  "country": "Indonesia",
+  "input_audio": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q3_multilingual\\sample_inputs\\sector_q3\\id_colloquial.mp3",
+  "whisper_model": "base",
+  "whisper_language": "id",
+  "raw_transcript": "Kok cicilannya mahal banget? Bisa jelaskan biaya dan dendanya?",
+  "normalized_transcript": "Kok cicilannya mahal banget? Bisa jelaskan biaya dan dendanya?",
+  "bot_response": "Terima kasih atas pertanyaan Anda tentang pembiayaan. Knowledge base saat ini belum memiliki informasi terverifikasi tentang cicilan, tenor, biaya, denda, atau persyaratan produk pembiayaan konsumen. Saya tidak akan menebak detail tersebut. Anda dapat meminta tindak lanjut dari perwakilan manusia.",
+  "tts_engine": "edge-tts",
+  "tts_voice": "id-ID-GadisNeural",
+  "output_audio": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q3_multilingual\\evidence\\audio_demos\\id_20261019T044455Z\\assistant_response.mp3",
+  "timestamp_utc": "20261019T044455Z",
+  "limitations": [
+    "Prerecorded audio input; not a live microphone call.",
+    "Input language supplied explicitly.",
+    "Rule-based localized bot; not a generative conversation.",
+    "Edge TTS requires an internet connection."
+  ]
+}

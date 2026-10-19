@@ -1,0 +1,20 @@
+{
+  "language": "fil",
+  "country": "Philippines",
+  "input_audio": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q3_multilingual\\filipino_test.mp3",
+  "whisper_model": "base",
+  "whisper_language": "tl",
+  "raw_transcript": "Kung musta. Paano kita ma-tutulungan.",
+  "normalized_transcript": "kumusta. Paano kita matutulungan.",
+  "bot_response": "Kumusta! Paano kita matutulungan?",
+  "tts_engine": "edge-tts",
+  "tts_voice": "fil-PH-BlessicaNeural",
+  "output_audio": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q3_multilingual\\evidence\\audio_demos\\fil_20261018T061706Z\\assistant_response.mp3",
+  "timestamp_utc": "20261018T061706Z",
+  "limitations": [
+    "Prerecorded audio input; not a live microphone call.",
+    "Input language supplied explicitly.",
+    "Rule-based localized bot; not a generative conversation.",
+    "Edge TTS requires an internet connection."
+  ]
+}

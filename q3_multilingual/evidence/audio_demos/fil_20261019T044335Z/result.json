@@ -1,0 +1,20 @@
+{
+  "language": "fil",
+  "country": "Philippines",
+  "input_audio": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q3_multilingual\\sample_inputs\\sector_q3\\ph_coverage.mp3",
+  "whisper_model": "base",
+  "whisper_language": "tl",
+  "raw_transcript": "Ano ang coverage ng life insurance policy. Gusto ko pang malaman kung ano ang kasama.",
+  "normalized_transcript": "Ano ang coverage ng life insurance policy. Gusto ko pang malaman kung ano ang kasama.",
+  "bot_response": "Salamat sa iyong tanong tungkol sa life insurance. Wala sa kasalukuyang knowledge base ang beripikadong detalye tungkol sa coverage, premium, policy benefits, o beneficiary. Hindi ako magbibigay ng hindi nakumpirmang impormasyon. Maaari kang humiling ng follow-up mula sa isang human representative.",
+  "tts_engine": "edge-tts",
+  "tts_voice": "fil-PH-BlessicaNeural",
+  "output_audio": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q3_multilingual\\evidence\\audio_demos\\fil_20261019T044335Z\\assistant_response.mp3",
+  "timestamp_utc": "20261019T044335Z",
+  "limitations": [
+    "Prerecorded audio input; not a live microphone call.",
+    "Input language supplied explicitly.",
+    "Rule-based localized bot; not a generative conversation.",
+    "Edge TTS requires an internet connection."
+  ]
+}

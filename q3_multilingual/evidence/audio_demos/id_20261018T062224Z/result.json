@@ -1,0 +1,20 @@
+{
+  "language": "id",
+  "country": "Indonesia",
+  "input_audio": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q3_multilingual\\indonesian_eligibility.mp3",
+  "whisper_model": "base",
+  "whisper_language": "id",
+  "raw_transcript": "berapa lama usaha saya harus sudah berjalan?",
+  "normalized_transcript": "berapa lama usaha saya harus sudah berjalan?",
+  "bot_response": "Usaha harus telah beroperasi secara berkelanjutan selama minimal 24 bulan sesuai dengan persyaratan kelayakan.",
+  "tts_engine": "edge-tts",
+  "tts_voice": "id-ID-GadisNeural",
+  "output_audio": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q3_multilingual\\evidence\\audio_demos\\id_20261018T062224Z\\assistant_response.mp3",
+  "timestamp_utc": "20261018T062224Z",
+  "limitations": [
+    "Prerecorded audio input; not a live microphone call.",
+    "Input language supplied explicitly.",
+    "Rule-based localized bot; not a generative conversation.",
+    "Edge TTS requires an internet connection."
+  ]
+}
