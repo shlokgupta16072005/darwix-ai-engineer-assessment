@@ -1,0 +1,94 @@
+{
+  "project": "Darwix AI Engineer Assessment - Q1",
+  "session_started_utc": "2026-10-19T12:40:49.002232+00:00",
+  "pipeline": [
+    "microphone",
+    "local_stt",
+    "q2_rag",
+    "local_tts"
+  ],
+  "turns": [
+    {
+      "turn": 1,
+      "timestamp_utc": "2026-10-19T12:41:05.118142+00:00",
+      "customer_transcript": "Can you tell me tomorrow's top mark is closing?",
+      "assistant_response": "I could not find this information in the knowledge base. I can arrange human follow-up for this question.",
+      "status": "completed",
+      "customer_audio": "turn_01_customer.wav",
+      "assistant_audio": "turn_01_assistant.wav",
+      "rag_mode": "local_fallback",
+      "sources": [
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.15524347370217992
+        },
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.07372586159843054
+        },
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.07309429636396342
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "timestamp_utc": "2026-10-19T12:41:19.277198+00:00",
+      "customer_transcript": "Can you please tell me tomorrow's stock market closing?",
+      "assistant_response": "I could not find this information in the knowledge base. I can arrange human follow-up for this question.",
+      "status": "completed",
+      "customer_audio": "turn_02_customer.wav",
+      "assistant_audio": "turn_02_assistant.wav",
+      "rag_mode": "local_fallback",
+      "sources": [
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.16624063814057413
+        },
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.07482167713548538
+        },
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.05852045203401358
+        }
+      ]
+    },
+    {
+      "turn": 3,
+      "timestamp_utc": "2026-10-19T12:41:31.141788+00:00",
+      "customer_transcript": "Can you please tell me tomorrow's stock market closing?",
+      "assistant_response": "I could not find this information in the knowledge base. I can arrange human follow-up for this question.",
+      "status": "completed",
+      "customer_audio": "turn_03_customer.wav",
+      "assistant_audio": "turn_03_assistant.wav",
+      "rag_mode": "local_fallback",
+      "sources": [
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.16624063814057413
+        },
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.07482167713548538
+        },
+        {
+          "source": "objection_handling.txt",
+          "category": "objection_handling",
+          "score": 0.05852045203401358
+        }
+      ]
+    }
+  ],
+  "session_updated_utc": "2026-10-19T12:41:31.141823+00:00"
+}
