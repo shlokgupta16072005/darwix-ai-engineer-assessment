@@ -1,0 +1,20 @@
+{
+  "language": "id",
+  "country": "Indonesia",
+  "input_audio": "q3_multilingual/indonesian_male_test.mp3",
+  "whisper_model": "base",
+  "whisper_language": "id",
+  "raw_transcript": "Halo, ada yang bisa saya bantu?",
+  "normalized_transcript": "Halo, ada yang bisa saya bantu?",
+  "bot_response": "Halo! Ada yang bisa saya bantu?",
+  "tts_engine": "edge-tts",
+  "tts_voice": "id-ID-GadisNeural",
+  "output_audio": "q3_multilingual/evidence/audio_demos/id_20261020T021640Z/assistant_response.mp3",
+  "timestamp_utc": "20261020T021640Z",
+  "limitations": [
+    "Prerecorded audio input; not a live microphone call.",
+    "Input language supplied explicitly.",
+    "Rule-based localized bot; not a generative conversation.",
+    "Edge TTS requires an internet connection."
+  ]
+}

@@ -112,7 +112,7 @@ def main():
     result = {
         "language": args.language,
         "country": config.country,
-        "input_audio": str(args.audio.resolve()),
+        "input_audio": args.audio.resolve().relative_to(ROOT.parent).as_posix(),
         "whisper_model": "base",
         "whisper_language": settings["whisper_language"],
         "raw_transcript": raw_transcript,
@@ -120,7 +120,7 @@ def main():
         "bot_response": response,
         "tts_engine": "edge-tts",
         "tts_voice": settings["voice"],
-        "output_audio": str(audio_output),
+        "output_audio": audio_output.relative_to(ROOT.parent).as_posix(),
         "timestamp_utc": timestamp,
         "limitations": [
             "Prerecorded audio input; not a live microphone call.",

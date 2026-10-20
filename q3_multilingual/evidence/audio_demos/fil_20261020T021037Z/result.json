@@ -1,0 +1,20 @@
+{
+  "language": "fil",
+  "country": "Philippines",
+  "input_audio": "q3_multilingual/filipino_male_test.mp3",
+  "whisper_model": "base",
+  "whisper_language": "tl",
+  "raw_transcript": "Kumusta, panukita matutulungan.",
+  "normalized_transcript": "Kumusta, panukita matutulungan.",
+  "bot_response": "Kumusta! Paano kita matutulungan?",
+  "tts_engine": "edge-tts",
+  "tts_voice": "fil-PH-BlessicaNeural",
+  "output_audio": "q3_multilingual/evidence/audio_demos/fil_20261020T021037Z/assistant_response.mp3",
+  "timestamp_utc": "20261020T021037Z",
+  "limitations": [
+    "Prerecorded audio input; not a live microphone call.",
+    "Input language supplied explicitly.",
+    "Rule-based localized bot; not a generative conversation.",
+    "Edge TTS requires an internet connection."
+  ]
+}
