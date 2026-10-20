@@ -6,9 +6,9 @@ This repository contains four prototypes for the Darwix AI Engineer assessment.
 
 | Component | Current implementation | Important limitation |
 |---|---|---|
-| Q1 — Voice Agent | Local STT, conversation agent, local TTS, voice loop, and Q2 retrieval client | Validate the complete required call scenarios and recorded-call evidence |
-| Q2 — Knowledge Base | Document loading, cleaning, PII processing, chunking, retrieval, and RAG answer generation | The build entry point and three Q2 test files are implemented; see the commands below to build the index and run tests. |
-| Q3 — Multilingual | Rule-based Filipino and Indonesian text routing, localized responses, and unit tests | No demonstrated end-to-end multilingual ASR/TTS pipeline |
+| Q1 — Voice Agent | Local STT, conversation agent, local TTS, voice loop, and Q2 retrieval client | Recorded tests demonstrate safe fallback; speech-recognition errors remain possible, and human escalation does not initiate a real transfer or callback |
+| Q2 — Knowledge Base | Document loading, cleaning, PII processing, chunking, retrieval, and RAG answer generation | Retrieval evaluation covers five queries; relevance and source-ranking errors remain possible. See the Q2 README for evidence and test instructions. |
+| Q3 — Multilingual | Rule-based Filipino and Indonesian text routing, localized responses, and unit tests | Prerecorded audio demos exist, but they do not establish natural customer-call performance or regional-accent coverage. |
 | Q4 — Live Insights | Transcript replay, prerecorded WAV replay using Faster-Whisper, rule-based signals, nudge cooldowns, dashboard API, and tests | No demonstrated live microphone or telephony stream; latency results are prototype measurements |
 
 These are prototype status descriptions, not claims of production readiness or assessment scores.
@@ -44,7 +44,7 @@ Some modules load environment variables from component-specific `.env` files. Ch
 
 See `q1_voice_agent/README.md` for architecture, configuration, and usage.
 
-The project includes local Faster-Whisper speech recognition, a conversation agent, local text-to-speech, and a retrieval client connected to Q2. Microphone use depends on compatible Windows audio hardware and PyAudioWPatch.
+The project includes local Faster-Whisper speech recognition, a conversation agent, local text-to-speech, and a retrieval client connected to Q2. The recorded session `q1_voice_agent/evidence/recorded_calls/session_20261019T124049Z/` contains three turns, a transcript, and customer/assistant WAV files. The tested out-of-scope question received a safe fallback, although the first speech transcription was inaccurate. Microphone use depends on compatible Windows audio hardware and PyAudioWPatch.
 
 ### Q2 — Knowledge Base / RAG
 
@@ -62,7 +62,7 @@ python -m unittest discover -s tests -v
 cd ..
 ```
 
-The prototype supports Filipino and Indonesian text interactions. It does not yet demonstrate integrated multilingual speech recognition and synthesis.
+The prototype supports Filipino life-insurance and Indonesian consumer-finance response patterns, with localization scripts, tests, and prerecorded audio demos. These are prototype demonstrations, not recordings of real customer calls. See the Philippines, Indonesia, and evidence directories under `q3_multilingual/` for details and limitations.
 
 ### Q4 — Live Insights
 
@@ -99,9 +99,9 @@ Audio replay uses overlapping chunks and Faster-Whisper. Chunk-level transcripti
 
 ## Evidence and limitations
 
-Each component contains its own README and, where available, test output, scenario results, screenshots, or latency measurements. Treat generated evidence files as snapshots of specific runs, not universal performance guarantees.
+Each component contains its own README and, where available, test output, scenario results, screenshots, recorded audio/transcripts, or latency measurements. Q1's recorded session includes three repeated out-of-scope turns; do not treat these as three distinct scenarios. Q2's retrieval evaluation contains five queries, with four top-1 expected-source matches. Q3 audio demos use prerecorded inputs and do not prove real-customer or regional-accent performance. Q4 latency results come from prototype replay tests, not production traffic. Treat all evidence as snapshots of specific runs, not universal performance guarantees.
 
-Before submission, verify that all required scenarios run from a clean environment, the evidence matches the current code, and the final repository includes setup instructions and a clear list of known limitations.
+Before submission, verify all required scenarios from a clean environment, confirm that evidence matches the current code, and include the walkthrough video and a clear limitations section. In particular, document the absence of real telephony transfer, the limits of prerecorded multilingual audio, and Q4's lack of a live microphone/telephony stream.
 
 ## Production improvements
 
