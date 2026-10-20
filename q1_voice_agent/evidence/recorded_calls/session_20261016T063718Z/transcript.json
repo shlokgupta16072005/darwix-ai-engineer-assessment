@@ -1,0 +1,40 @@
+{
+  "project": "Darwix AI Engineer Assessment - Q1",
+  "session_started_utc": "2026-10-16T06:37:18.713587+00:00",
+  "pipeline": [
+    "microphone",
+    "local_stt",
+    "q2_rag",
+    "local_tts"
+  ],
+  "turns": [
+    {
+      "turn": 1,
+      "timestamp_utc": "2026-10-16T06:37:34.336259+00:00",
+      "customer_transcript": "What documents are required to apply for business loan?",
+      "assistant_response": "Typical requirements mentioned in the knowledge base include identity proof, PAN or applicable tax identification information, business proof or registration, where applicable, recent business bank statements or other requested financial records. Additional documents may be requested depending on the application.",
+      "status": "completed",
+      "customer_audio": "turn_01_customer.wav",
+      "assistant_audio": "turn_01_assistant.wav",
+      "rag_mode": "local_fallback",
+      "sources": [
+        {
+          "source": "faq.txt",
+          "category": "faq",
+          "score": 0.24579780922967823
+        },
+        {
+          "source": "application_process.txt",
+          "category": "application_process",
+          "score": 0.22090276000878517
+        },
+        {
+          "source": "eligibility_rules.pdf",
+          "category": "eligibility",
+          "score": 0.19079548791305176
+        }
+      ]
+    }
+  ],
+  "session_updated_utc": "2026-10-16T06:37:34.336322+00:00"
+}
