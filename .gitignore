@@ -29,3 +29,7 @@ Thumbs.db
 
 # Generated audio
 *.wav
+
+# Local backup files
+*.bak
+*.before_*.bak
