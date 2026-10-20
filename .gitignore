@@ -33,3 +33,6 @@ Thumbs.db
 # Local backup files
 *.bak
 *.before_*.bak
+
+# Local documentation backups
+*_backup.md
