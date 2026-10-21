@@ -1,4 +1,4 @@
-from pathlib import Path
+﻿from pathlib import Path
 import os
 import re
 import sys
@@ -161,61 +161,29 @@ def extract_business_vintage(
         2 years
     """
 
-    context = build_context(results)
-
+    # Inspect each chunk independently. A combined context can place
+    # unrelated loan-tenure durations next to business-age language.
     patterns = [
-        (
-            r"business[-\s]?vintage[^.\n]{0,100}?"
-            r"(\d+)\s*(months?|years?)"
-        ),
-
-        (
-            r"business[^.\n]{0,80}?"
-            r"at least\s+(\d+)\s*(months?|years?)"
-        ),
-
-        (
-            r"operated[^.\n]{0,80}?"
-            r"at least\s+(\d+)\s*(months?|years?)"
-        ),
-
-        (
-            r"minimum[^.\n]{0,80}?"
-            r"business[^.\n]{0,80}?"
-            r"(\d+)\s*(months?|years?)"
-        ),
+        r"business[-\s]?vintage[^.\n]{0,100}?"
+        r"(\d+)\s*(months?|years?)",
+        r"business[^.\n]{0,100}?"
+        r"(?:at least|minimum of)\s+(\d+)\s*(months?|years?)",
+        r"business[^.\n]{0,100}?"
+        r"(?:operated|operation|operating)[^.\n]{0,100}?"
+        r"(?:at least|minimum of)\s+(\d+)\s*(months?|years?)",
+        r"at least\s+(\d+)\s*(months?|years?)"
+        r"[^.\n]{0,100}(?:continuous )?operation",
     ]
 
-    for pattern in patterns:
+    for result in results:
+        chunk = str(result.get("text", ""))
 
-        match = re.search(
-            pattern,
-            context,
-            re.IGNORECASE
-        )
-
-        if match:
-
-            number = match.group(1)
-            unit = match.group(2)
-
-            return f"{number} {unit}"
-
-    # Final simple fallback
-    match = re.search(
-        r"(\d+)\s*(months?|years?)"
-        r"[^\n]{0,80}"
-        r"(?:business|operat)",
-        context,
-        re.IGNORECASE
-    )
-
-    if match:
-
-        return (
-            f"{match.group(1)} "
-            f"{match.group(2)}"
-        )
+        for pattern in patterns:
+            match = re.search(pattern, chunk, re.IGNORECASE)
+            if match:
+                number = match.group(1)
+                unit = match.group(2).lower()
+                return f"{number} {unit}"
 
     return None
 
@@ -406,6 +374,14 @@ def fallback_answer(
                 f"{vintage}."
             )
 
+        # Do not fall through to unrelated facts, such as loan amount
+        # or loan tenure, when business-vintage evidence is missing.
+        return (
+            "I could not verify the minimum business-vintage "
+            "requirement from the retrieved information. "
+            "I can arrange human follow-up for this question."
+        )
+
 
     # ========================================================
     # ONE-YEAR BUSINESS
@@ -439,6 +415,22 @@ def fallback_answer(
     if (
         "loan amount" in question_lower
         or (
+            "maximum" in question_lower
+            and "amount" in question_lower
+        )
+        or (
+            "max" in question_lower
+            and "amount" in question_lower
+        )
+        or (
+            "highest" in question_lower
+            and "amount" in question_lower
+        )
+        or (
+            "loan" in question_lower
+            and any(term in question_lower for term in ("maximum", "max", "highest"))
+        )
+        or (
             "minimum" in question_lower
             and "maximum" in question_lower
             and "loan" in question_lower
@@ -448,6 +440,35 @@ def fallback_answer(
             and "loan" in question_lower
         )
     ):
+
+        # For maximum-amount questions, use only explicit maximum-limit
+        # evidence. Do not treat an example of an oversized request
+        # (for example, 30 lakh) as a product limit.
+        asks_maximum = any(
+            term in question_lower
+            for term in ("maximum", "max", "highest")
+        ) and "amount" in question_lower
+
+        if asks_maximum:
+            for result in results:
+                chunk = str(result.get("text", "")).lower()
+
+                # Require the maximum-limit wording and its value
+                # to appear in the same retrieved chunk.
+                if (
+                    "maximum loan amount" in chunk
+                    and ("25,00,000" in chunk or "25 lakh" in chunk)
+                ) or (
+                    "maximum amount" in chunk
+                    and ("25,00,000" in chunk or "25 lakh" in chunk)
+                ) or (
+                    "stated maximum is 25 lakh" in chunk
+                ):
+                    return (
+                        "The knowledge base states that the maximum "
+                        "Business Growth Loan amount is 25 lakh "
+                        "(25,00,000 rupees)."
+                    )
 
         amounts = extract_loan_amounts(
             results

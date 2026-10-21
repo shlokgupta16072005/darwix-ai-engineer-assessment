@@ -1,3 +1,4 @@
+
 from typing import Dict, List
 import re
 
@@ -7,10 +8,7 @@ DEFAULT_CHUNK_OVERLAP = 20
 
 
 def split_into_sentences(text: str) -> List[str]:
-    """
-    Split text into sentence-like units while preserving useful context.
-    """
-
+    """Split text into sentence-like units while preserving context."""
     text = text.strip()
 
     if not text:
@@ -18,7 +16,7 @@ def split_into_sentences(text: str) -> List[str]:
 
     sentences = re.split(
         r"(?<=[.!?])\s+|\n+",
-        text
+        text,
     )
 
     return [
@@ -29,10 +27,7 @@ def split_into_sentences(text: str) -> List[str]:
 
 
 def count_words(text: str) -> int:
-    """
-    Count words in a text block.
-    """
-
+    """Count words in a text block."""
     return len(text.split())
 
 
@@ -42,18 +37,17 @@ def create_chunks(
     chunk_overlap: int = DEFAULT_CHUNK_OVERLAP,
 ) -> List[str]:
     """
-    Create sentence-aware overlapping chunks.
-
-    The chunker tries to keep related sentences together instead
-    of cutting the document at arbitrary word positions.
+    Create sentence-aware overlapping chunks for general documents.
     """
-
     if not text.strip():
         return []
 
-    if chunk_overlap >= chunk_size:
+    if chunk_size <= 0:
+        raise ValueError("chunk_size must be greater than zero")
+
+    if chunk_overlap < 0 or chunk_overlap >= chunk_size:
         raise ValueError(
-            "chunk_overlap must be smaller than chunk_size"
+            "chunk_overlap must be non-negative and smaller than chunk_size"
         )
 
     sentences = split_into_sentences(text)
@@ -62,53 +56,32 @@ def create_chunks(
         return []
 
     chunks = []
-
     current_sentences = []
     current_word_count = 0
 
     for sentence in sentences:
-
         sentence_word_count = count_words(sentence)
 
-        # If adding this sentence would exceed the target size,
-        # save the current chunk first.
         if (
             current_sentences
-            and current_word_count + sentence_word_count
-            > chunk_size
+            and current_word_count + sentence_word_count > chunk_size
         ):
-
-            chunk = " ".join(
-                current_sentences
-            ).strip()
+            chunk = " ".join(current_sentences).strip()
 
             if chunk:
                 chunks.append(chunk)
 
-            # Keep a small overlap from the end of the
-            # previous chunk.
+            # Preserve a small overlap from the previous chunk.
             overlap_sentences = []
             overlap_words = 0
 
-            for previous_sentence in reversed(
-                current_sentences
-            ):
+            for previous_sentence in reversed(current_sentences):
+                previous_words = count_words(previous_sentence)
 
-                previous_words = count_words(
-                    previous_sentence
-                )
-
-                if (
-                    overlap_words + previous_words
-                    > chunk_overlap
-                ):
+                if overlap_words + previous_words > chunk_overlap:
                     break
 
-                overlap_sentences.insert(
-                    0,
-                    previous_sentence
-                )
-
+                overlap_sentences.insert(0, previous_sentence)
                 overlap_words += previous_words
 
             current_sentences = overlap_sentences
@@ -117,15 +90,90 @@ def create_chunks(
         current_sentences.append(sentence)
         current_word_count += sentence_word_count
 
-    # Add final chunk.
     if current_sentences:
-
-        chunk = " ".join(
-            current_sentences
-        ).strip()
+        chunk = " ".join(current_sentences).strip()
 
         if chunk:
             chunks.append(chunk)
+
+    return chunks
+
+
+def create_faq_chunks(
+    text: str,
+    chunk_size: int = DEFAULT_CHUNK_SIZE,
+    chunk_overlap: int = DEFAULT_CHUNK_OVERLAP,
+) -> List[str]:
+    """
+    Chunk FAQs without separating a question from its answer.
+
+    Each Qn entry remains an indivisible unit. Adjacent entries are
+    grouped up to chunk_size words where possible. A single entry
+    may exceed the target size to preserve the complete answer.
+    """
+    if not text.strip():
+        return []
+
+    if chunk_size <= 0:
+        raise ValueError("chunk_size must be greater than zero")
+
+    if chunk_overlap < 0 or chunk_overlap >= chunk_size:
+        raise ValueError(
+            "chunk_overlap must be non-negative and smaller than chunk_size"
+        )
+
+    # Split before numbered FAQ questions, keeping the question and
+    # everything following it up to the next question in the same unit.
+    parts = re.split(
+        r"(?=^\s*Q\d+\.\s)",
+        text.strip(),
+        flags=re.IGNORECASE | re.MULTILINE,
+    )
+
+    preamble = []
+    entries = []
+
+    for part in parts:
+        part = part.strip()
+
+        if not part:
+            continue
+
+        if re.match(r"^\s*Q\d+\.\s", part, flags=re.IGNORECASE):
+            entries.append(part)
+        elif entries:
+            # Keep intervening text attached to the preceding FAQ entry.
+            entries[-1] += "\n" + part
+        else:
+            preamble.append(part)
+
+    units = []
+
+    if preamble:
+        units.append("\n".join(preamble))
+
+    units.extend(entries)
+
+    chunks = []
+    current_units = []
+    current_words = 0
+
+    for unit in units:
+        unit_words = count_words(unit)
+
+        if (
+            current_units
+            and current_words + unit_words > chunk_size
+        ):
+            chunks.append("\n\n".join(current_units))
+            current_units = []
+            current_words = 0
+
+        current_units.append(unit)
+        current_words += unit_words
+
+    if current_units:
+        chunks.append("\n\n".join(current_units))
 
     return chunks
 
@@ -136,21 +184,24 @@ def chunk_document(
     chunk_overlap: int = DEFAULT_CHUNK_OVERLAP,
 ) -> List[Dict]:
     """
-    Convert one cleaned document into retrieval chunks.
-
-    Each chunk preserves the original document metadata.
+    Chunk one document while preserving its metadata.
     """
-
-    chunks = create_chunks(
-        document["text"],
-        chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap,
-    )
+    if document.get("category") == "faq":
+        chunks = create_faq_chunks(
+            document["text"],
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+        )
+    else:
+        chunks = create_chunks(
+            document["text"],
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+        )
 
     chunk_records = []
 
     for index, chunk in enumerate(chunks):
-
         chunk_records.append(
             {
                 "chunk_id": (
@@ -160,14 +211,8 @@ def chunk_document(
                 "source": document["source"],
                 "file_type": document["file_type"],
                 "category": document["category"],
-                "pii_detected": document.get(
-                    "pii_detected",
-                    False
-                ),
-                "pii_types": document.get(
-                    "pii_types",
-                    []
-                ),
+                "pii_detected": document.get("pii_detected", False),
+                "pii_types": document.get("pii_types", []),
                 "chunk_index": index,
                 "text": chunk,
             }
@@ -181,25 +226,17 @@ def chunk_documents(
     chunk_size: int = DEFAULT_CHUNK_SIZE,
     chunk_overlap: int = DEFAULT_CHUNK_OVERLAP,
 ) -> List[Dict]:
-    """
-    Chunk all documents.
-
-    Returns a flat list of chunk records.
-    """
-
+    """Chunk all documents and return a flat list of chunk records."""
     all_chunks = []
 
     for document in documents:
-
         document_chunks = chunk_document(
             document,
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
         )
 
-        all_chunks.extend(
-            document_chunks
-        )
+        all_chunks.extend(document_chunks)
 
         print(
             f"[CHUNKED] {document['source']} "
@@ -210,71 +247,40 @@ def chunk_documents(
 
 
 if __name__ == "__main__":
-
-    from document_loader import load_all_documents
-    from cleaner import clean_documents
-    from pii_detector import process_documents
+    # Support both direct script execution and package execution.
+    try:
+        from ingestion.document_loader import load_all_documents
+        from ingestion.cleaner import clean_documents
+        from ingestion.pii_detector import process_documents
+    except ImportError:
+        from document_loader import load_all_documents
+        from cleaner import clean_documents
+        from pii_detector import process_documents
 
     print("=" * 60)
     print("Q2 KNOWLEDGE BASE - CHUNKER")
     print("=" * 60)
 
-    # Step 1: Load documents
     print("\nLoading documents...\n")
-
     documents = load_all_documents()
 
-    # Step 2: Clean documents
     print("\nCleaning documents...\n")
+    cleaned_documents = clean_documents(documents)
 
-    cleaned_documents = clean_documents(
-        documents
-    )
-
-    # Step 3: Detect/mask PII
     print("\nChecking for PII...\n")
+    processed_documents = process_documents(cleaned_documents)
 
-    processed_documents = process_documents(
-        cleaned_documents
-    )
-
-    # Step 4: Create chunks
     print("\nCreating chunks...\n")
-
-    chunks = chunk_documents(
-        processed_documents
-    )
+    chunks = chunk_documents(processed_documents)
 
     print("\n" + "=" * 60)
-
-    print(
-        f"TOTAL CHUNKS CREATED: {len(chunks)}"
-    )
-
+    print(f"TOTAL CHUNKS CREATED: {len(chunks)}")
     print("=" * 60)
 
-    # Display examples
     for chunk in chunks[:5]:
-
         print("\n" + "-" * 60)
-
-        print(
-            f"Chunk ID: {chunk['chunk_id']}"
-        )
-
-        print(
-            f"Source: {chunk['source']}"
-        )
-
-        print(
-            f"Category: {chunk['category']}"
-        )
-
-        print(
-            f"Chunk index: "
-            f"{chunk['chunk_index']}"
-        )
-
-        print(
-            f"Text:\n{chunk['text'][:700]}"
-        )
+        print(f"Chunk ID: {chunk['chunk_id']}")
+        print(f"Source: {chunk['source']}")
+        print(f"Category: {chunk['category']}")
+        print(f"Chunk index: {chunk['chunk_index']}")
+        print(f"Text:\n{chunk['text'][:700]}")

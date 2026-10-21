@@ -97,6 +97,45 @@ def test_empty_retrieval_uses_safe_fallback():
     assert "human representative" in answer
 
 
+def test_business_vintage_does_not_confuse_loan_tenure_with_business_age():
+    results = [{
+        "source": "faq.txt",
+        "category": "faq",
+        "score": 0.8,
+        "text": (
+            "The minimum loan amount is 2 lakh. "
+            "The maximum loan amount is 25 lakh. "
+            "The available tenure is 12 to 60 months. "
+            "The business should have at least 24 months "
+            "of continuous operation under the stated eligibility rule."
+        ),
+    }]
+
+    answer = fallback_answer(
+        "What is the minimum business vintage required?",
+        results,
+    ).lower()
+
+    assert "24 months" in answer
+    assert "60 months" not in answer
+
+
+def test_maximum_loan_amount_question_is_recognized():
+    results = [{
+        "source": "faq.txt",
+        "category": "faq",
+        "score": 0.8,
+        "text": (
+            "The stated maximum loan amount is 25 lakh. "
+            "The available tenure is 12 to 60 months."
+        ),
+    }]
+
+    answer = fallback_answer("What is the maximum loan amount?", results).lower()
+
+    assert "25 lakh" in answer
+
+
 def test_stock_market_question_uses_safe_fallback(results):
     answer = fallback_answer(
         "Can you tell me tomorrow's stock market closing?",
@@ -120,3 +159,25 @@ def test_unrelated_question_with_high_scores_uses_safe_fallback(results):
 
     assert "could not find this information" in answer
     assert "human" in answer
+
+
+def test_maximum_amount_asr_variation_returns_supported_limit():
+    results = [{
+        "source": "faq.txt",
+        "category": "faq",
+        "score": 0.8,
+        "text": (
+            "Q1. What is the minimum loan amount? "
+            "The Business Growth Loan has a stated minimum amount "
+            "of ?2,00,000. "
+            "Q2. What is the maximum loan amount? "
+            "The stated maximum amount is ?25,00,000. "
+            "Q14. Can I borrow ?30 lakh? "
+            "The stated maximum is ?25 lakh."
+        ),
+    }]
+
+    answer = fallback_answer("What is the maximum or low amount?", results)
+
+    assert "25,00,000" in answer or "25 lakh" in answer
+    assert "30 lakh" not in answer
