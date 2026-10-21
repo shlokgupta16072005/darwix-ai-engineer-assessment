@@ -1,3 +1,4 @@
+
 import unittest
 
 from common.config import PHILIPPINES_CONFIG, INDONESIA_CONFIG
@@ -16,7 +17,9 @@ class TestMultilingualVoiceBots(unittest.TestCase):
     def test_filipino_loan_inquiry(self):
         self.assertIn(
             "business loan",
-            self.ph.respond("Kailangan ko ng business loan para sa aking negosyo.")
+            self.ph.respond(
+                "Kailangan ko ng business loan para sa aking negosyo."
+            ).lower()
         )
 
     def test_filipino_eligibility(self):
@@ -42,7 +45,9 @@ class TestMultilingualVoiceBots(unittest.TestCase):
     def test_indonesian_loan_inquiry(self):
         self.assertIn(
             "pinjaman bisnis",
-            self.idn.respond("Saya membutuhkan pinjaman bisnis untuk usaha saya.")
+            self.idn.respond(
+                "Saya membutuhkan pinjaman bisnis untuk usaha saya."
+            ).lower()
         )
 
     def test_indonesian_eligibility(self):
@@ -64,10 +69,12 @@ class TestMultilingualVoiceBots(unittest.TestCase):
 
     def test_empty_input(self):
         self.assertEqual(
-            self.ph.respond(""), PHILIPPINES_CONFIG.fallback_message
+            self.ph.respond(""),
+            PHILIPPINES_CONFIG.fallback_message
         )
         self.assertEqual(
-            self.idn.respond(""), INDONESIA_CONFIG.fallback_message
+            self.idn.respond(""),
+            INDONESIA_CONFIG.fallback_message
         )
 
     def test_cross_language_rejection(self):
@@ -102,10 +109,12 @@ class TestMultilingualVoiceBots(unittest.TestCase):
             self.ph.respond("ano ang mga dokumentong ka ilangan.")
         )
 
-    # New scenario tests
+    # Human escalation scenarios
 
     def test_filipino_human_escalation_request(self):
-        response = self.ph.respond("Gusto kong makipag-usap sa human agent.")
+        response = self.ph.respond(
+            "Gusto kong makipag-usap sa human agent."
+        )
         self.assertTrue(
             any(term in response.lower() for term in (
                 "human", "representative", "follow-up", "tao"
@@ -114,13 +123,17 @@ class TestMultilingualVoiceBots(unittest.TestCase):
         )
 
     def test_indonesian_human_escalation_request(self):
-        response = self.idn.respond("Saya ingin berbicara dengan petugas.")
+        response = self.idn.respond(
+            "Saya ingin berbicara dengan petugas."
+        )
         self.assertTrue(
             any(term in response.lower() for term in (
                 "perwakilan", "petugas", "tindak lanjut", "manusia"
             )),
             response
         )
+
+    # Code-switching scenarios
 
     def test_filipino_english_code_switching(self):
         response = self.ph.respond(
@@ -137,6 +150,8 @@ class TestMultilingualVoiceBots(unittest.TestCase):
         self.assertIn("pembiayaan", response.lower())
         self.assertIn("terverifikasi", response.lower())
         self.assertIn("tindak lanjut", response.lower())
+
+    # Sector objections and safe-response scenarios
 
     def test_filipino_insurance_objection_does_not_invent_policy(self):
         response = self.ph.respond(
@@ -168,15 +183,18 @@ class TestMultilingualVoiceBots(unittest.TestCase):
             INDONESIA_CONFIG.fallback_message
         )
 
-
     def test_filipino_premium_question_uses_safe_sector_response(self):
-        response = self.ph.respond("Magkano ang premium ng life insurance?")
+        response = self.ph.respond(
+            "Magkano ang premium ng life insurance?"
+        )
         self.assertIn("premium", response.lower())
         self.assertIn("knowledge base", response.lower())
         self.assertIn("follow-up", response.lower())
 
     def test_indonesian_installment_question_uses_safe_sector_response(self):
-        response = self.idn.respond("Berapa cicilan untuk consumer financing?")
+        response = self.idn.respond(
+            "Berapa cicilan untuk consumer financing?"
+        )
         self.assertIn("cicilan", response.lower())
         self.assertIn("terverifikasi", response.lower())
         self.assertIn("tindak lanjut", response.lower())
@@ -188,9 +206,30 @@ class TestMultilingualVoiceBots(unittest.TestCase):
         self.assertIn("tindak lanjut", response.lower())
 
     def test_indonesian_fee_objection_does_not_invent_terms(self):
-        response = self.idn.respond("Biaya pembiayaan terlalu mahal, bisa dikurangi?")
+        response = self.idn.respond(
+            "Biaya pembiayaan terlalu mahal, bisa dikurangi?"
+        )
         self.assertIn("terverifikasi", response.lower())
         self.assertIn("biaya", response.lower())
+        self.assertIn("tindak lanjut", response.lower())
+
+    # Regression tests: explicit human requests must take priority
+    # over sector-specific insurance and financing fallbacks.
+
+    def test_filipino_insurance_question_with_human_request(self):
+        response = self.ph.respond(
+            "I have a life insurance question. "
+            "Please connect me to a human agent."
+        )
+        self.assertIn("human representative", response.lower())
+        self.assertIn("human follow-up", response.lower())
+
+    def test_indonesian_financing_question_with_human_request(self):
+        response = self.idn.respond(
+            "Saya ada pertanyaan consumer financing. "
+            "Saya ingin berbicara dengan petugas."
+        )
+        self.assertIn("petugas", response.lower())
         self.assertIn("tindak lanjut", response.lower())
 
 
