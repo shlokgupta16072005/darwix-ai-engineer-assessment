@@ -36,9 +36,7 @@ def create_chunks(
     chunk_size: int = DEFAULT_CHUNK_SIZE,
     chunk_overlap: int = DEFAULT_CHUNK_OVERLAP,
 ) -> List[str]:
-    """
-    Create sentence-aware overlapping chunks for general documents.
-    """
+    """Create sentence-aware overlapping chunks for general documents."""
     if not text.strip():
         return []
 
@@ -105,11 +103,11 @@ def create_faq_chunks(
     chunk_overlap: int = DEFAULT_CHUNK_OVERLAP,
 ) -> List[str]:
     """
-    Chunk FAQs without separating a question from its answer.
+    Keep each FAQ question and its answer in a separate chunk.
 
-    Each Qn entry remains an indivisible unit. Adjacent entries are
-    grouped up to chunk_size words where possible. A single entry
-    may exceed the target size to preserve the complete answer.
+    The question-answer entry is treated as an indivisible unit.
+    An entry may exceed chunk_size to preserve its complete answer.
+    Any preamble before the first numbered question is retained.
     """
     if not text.strip():
         return []
@@ -122,16 +120,15 @@ def create_faq_chunks(
             "chunk_overlap must be non-negative and smaller than chunk_size"
         )
 
-    # Split before numbered FAQ questions, keeping the question and
-    # everything following it up to the next question in the same unit.
+    # Split immediately before numbered FAQ questions.
     parts = re.split(
         r"(?=^\s*Q\d+\.\s)",
         text.strip(),
         flags=re.IGNORECASE | re.MULTILINE,
     )
 
+    chunks = []
     preamble = []
-    entries = []
 
     for part in parts:
         part = part.strip()
@@ -140,40 +137,23 @@ def create_faq_chunks(
             continue
 
         if re.match(r"^\s*Q\d+\.\s", part, flags=re.IGNORECASE):
-            entries.append(part)
-        elif entries:
-            # Keep intervening text attached to the preceding FAQ entry.
-            entries[-1] += "\n" + part
+            # Preserve any preamble as a separate chunk.
+            if preamble:
+                chunks.append("\n\n".join(preamble))
+                preamble = []
+
+            # Keep this entire question and its answer together.
+            chunks.append(part)
+
+        elif chunks:
+            # Attach intervening text to the preceding FAQ entry.
+            chunks[-1] += "\n" + part
+
         else:
             preamble.append(part)
 
-    units = []
-
     if preamble:
-        units.append("\n".join(preamble))
-
-    units.extend(entries)
-
-    chunks = []
-    current_units = []
-    current_words = 0
-
-    for unit in units:
-        unit_words = count_words(unit)
-
-        if (
-            current_units
-            and current_words + unit_words > chunk_size
-        ):
-            chunks.append("\n\n".join(current_units))
-            current_units = []
-            current_words = 0
-
-        current_units.append(unit)
-        current_words += unit_words
-
-    if current_units:
-        chunks.append("\n\n".join(current_units))
+        chunks.insert(0, "\n\n".join(preamble))
 
     return chunks
 
@@ -183,9 +163,7 @@ def chunk_document(
     chunk_size: int = DEFAULT_CHUNK_SIZE,
     chunk_overlap: int = DEFAULT_CHUNK_OVERLAP,
 ) -> List[Dict]:
-    """
-    Chunk one document while preserving its metadata.
-    """
+    """Chunk one document while preserving its metadata."""
     if document.get("category") == "faq":
         chunks = create_faq_chunks(
             document["text"],
@@ -204,10 +182,7 @@ def chunk_document(
     for index, chunk in enumerate(chunks):
         chunk_records.append(
             {
-                "chunk_id": (
-                    f"{document['source']}"
-                    f"::chunk_{index}"
-                ),
+                "chunk_id": f"{document['source']}::chunk_{index}",
                 "source": document["source"],
                 "file_type": document["file_type"],
                 "category": document["category"],
