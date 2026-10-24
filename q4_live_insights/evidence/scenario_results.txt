@@ -1,35 +1,45 @@
 Scenario: Payment difficulty
 Transcript: The customer cannot afford the payment.
-Detected: ['payment_difficulty']
-Nudges: [{'signal': 'payment_difficulty', 'priority': 'medium', 'confidence': 1.0, 'nudge': 'Explore approved payment-support options or offer a human callback.', 'method': 'keyword_rule', 'created_at': '1970-01-01T00:16:40+00:00'}]
+Expected signal: payment_difficulty
+Detected signals: ['payment_difficulty']
+Generated nudges: [{'signal': 'payment_difficulty', 'priority': 'medium', 'nudge': 'Explore approved payment-support options or offer a human callback.', 'method': 'keyword_rule', 'created_at': '1970-01-01T00:16:40+00:00'}]
 Verdict: PASS
 
 Scenario: Rising frustration
 Transcript: This is frustrating. You are not listening.
-Detected: ['rising_frustration']
-Nudges: [{'signal': 'rising_frustration', 'priority': 'high', 'confidence': 1.0, 'nudge': "Acknowledge the customer's concern, listen carefully, and respond calmly.", 'method': 'keyword_rule', 'created_at': '1970-01-01T00:26:40+00:00'}]
+Expected signal: rising_frustration
+Detected signals: ['rising_frustration']
+Generated nudges: [{'signal': 'rising_frustration', 'priority': 'high', 'nudge': "Acknowledge the customer's concern, listen carefully, and respond calmly.", 'method': 'keyword_rule', 'created_at': '1970-01-01T00:18:20+00:00'}]
 Verdict: PASS
 
 Scenario: Compliance gap
 Transcript: The agent guaranteed approval.
-Detected: ['compliance_gap']
-Nudges: [{'signal': 'compliance_gap', 'priority': 'high', 'confidence': 1.0, 'nudge': 'Check the required disclosure before proceeding. Do not promise guaranteed approval or pricing.', 'method': 'keyword_rule', 'created_at': '1970-01-01T00:36:40+00:00'}]
+Expected signal: compliance_gap
+Detected signals: ['compliance_gap']
+Generated nudges: [{'signal': 'compliance_gap', 'priority': 'high', 'nudge': 'Check the required disclosure before proceeding. Do not promise guaranteed approval or pricing.', 'method': 'keyword_rule', 'created_at': '1970-01-01T00:20:00+00:00'}]
 Verdict: PASS
 
 Scenario: Missed cross-sell
-Transcript: The customer mentioned a second vehicle.
-Detected: ['missed_cross_sell']
-Nudges: [{'signal': 'missed_cross_sell', 'priority': 'medium', 'confidence': 1.0, 'nudge': "Check whether an approved multi-vehicle offer is relevant to the customer's needs.", 'method': 'keyword_rule', 'created_at': '1970-01-01T00:46:40+00:00'}]
+Transcript: The customer is interested in a second vehicle.
+Expected signal: missed_cross_sell
+Detected signals: ['missed_cross_sell']
+Generated nudges: [{'signal': 'missed_cross_sell', 'priority': 'medium', 'nudge': "Check whether an approved multi-vehicle offer is relevant to the customer's needs.", 'method': 'keyword_rule', 'created_at': '1970-01-01T00:21:40+00:00'}]
 Verdict: PASS
 
 Scenario: Callback needed
 Transcript: Please call me back and let me speak to a human.
-Detected: ['callback_needed']
-Nudges: [{'signal': 'callback_needed', 'priority': 'high', 'confidence': 1.0, 'nudge': 'Arrange a human follow-up according to the approved workflow.', 'method': 'keyword_rule', 'created_at': '1970-01-01T00:56:40+00:00'}]
+Expected signal: callback_needed
+Detected signals: ['callback_needed']
+Generated nudges: [{'signal': 'callback_needed', 'priority': 'high', 'nudge': 'Arrange a human follow-up according to the approved workflow.', 'method': 'keyword_rule', 'created_at': '1970-01-01T00:23:20+00:00'}]
 Verdict: PASS
 
 Scenario: Normal conversation
 Transcript: Hello, how can I help you today?
-Detected: []
-Nudges: []
+Expected signal: No signal
+Detected signals: []
+Generated nudges: []
 Verdict: PASS
+
+==================================================
+Scenario summary: 6/6 passed
+Failed scenarios: None
