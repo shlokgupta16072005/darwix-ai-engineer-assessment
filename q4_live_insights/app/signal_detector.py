@@ -16,18 +16,26 @@ SIGNALS = {
             "guaranteed rate",
         ],
         "priority": "high",
-        "nudge": "Check the required disclosure before proceeding. Do not promise guaranteed approval or pricing.",
+        "nudge": (
+            "Check the required disclosure before proceeding. "
+            "Do not promise guaranteed approval or pricing."
+        ),
     },
     "rising_frustration": {
         "keywords": [
             "this is frustrating",
             "i am frustrated",
+            "i'm frustrated",
             "i am angry",
+            "i'm angry",
             "you are not listening",
             "i already told you",
         ],
         "priority": "high",
-        "nudge": "Acknowledge the customer's concern, listen carefully, and respond calmly.",
+        "nudge": (
+            "Acknowledge the customer's concern, listen carefully, "
+            "and respond calmly."
+        ),
     },
     "payment_difficulty": {
         "keywords": [
@@ -38,17 +46,25 @@ SIGNALS = {
             "payment difficulty",
         ],
         "priority": "medium",
-        "nudge": "Explore approved payment-support options or offer a human callback.",
+        "nudge": (
+            "Explore approved payment-support options or offer a human callback."
+        ),
     },
     "missed_cross_sell": {
-        "keywords": [
-            "second vehicle",
-            "another vehicle",
-            "multiple vehicles",
-            "second car",
+         "keywords": [
+            "interested in a second vehicle",
+            "interested in another vehicle",
+            "looking to buy another vehicle",
+            "planning to buy another vehicle",
+            "wants to purchase another vehicle",
+            "needs financing for another vehicle",
+            "buying a second car",
         ],
         "priority": "medium",
-        "nudge": "Check whether an approved multi-vehicle offer is relevant to the customer's needs.",
+        "nudge": (
+            "Check whether an approved multi-vehicle offer is relevant "
+            "to the customer's needs."
+        ),
     },
     "callback_needed": {
         "keywords": [
@@ -64,10 +80,32 @@ SIGNALS = {
 }
 
 
-def detect_signals(transcript: str) -> list[dict[str, Any]]:
-    """Return keyword-matched signals from the latest transcript text."""
+def _is_negated(text: str, keyword: str) -> bool:
+    """Detect a nearby negation before a matched keyword.
 
-    if not transcript or not transcript.strip():
+    This is a conservative rule-based safeguard, not full language
+    understanding. It intentionally checks a short window before a match.
+    """
+    for match in re.finditer(
+        r"(?<!\w)" + re.escape(keyword) + r"(?!\w)",
+        text,
+    ):
+        prefix = text[max(0, match.start() - 45):match.start()]
+        if re.search(
+            r"\b(?:not|never|no longer|did not|didn't|does not|doesn't|"
+            r"was not|wasn't|were not|weren't|without)\b"
+            r"(?:\s+\w+){0,5}\s*$",
+            prefix,
+        ):
+            return True
+
+    return False
+
+
+def detect_signals(transcript: str) -> list[dict[str, Any]]:
+    """Return keyword-matched signals from transcript text."""
+
+    if not isinstance(transcript, str) or not transcript.strip():
         return []
 
     text = re.sub(r"\s+", " ", transcript.lower()).strip()
@@ -83,6 +121,12 @@ def detect_signals(transcript: str) -> list[dict[str, Any]]:
             )
         ]
 
+        # Suppress matches that are negated in their local context.
+        matched = [
+            keyword
+            for keyword in matched
+            if not _is_negated(text, keyword)
+        ]
 
         # Suppress historical vehicle mentions that are not current opportunities.
         if signal_name == "missed_cross_sell" and re.search(

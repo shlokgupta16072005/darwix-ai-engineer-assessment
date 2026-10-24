@@ -1,0 +1,42 @@
+
+[INFO] OpenAI generation unavailable.
+[INFO] API credits/quota are unavailable.
+[INFO] Using local knowledge-base fallback.
+
+Q: What is the minimum business vintage?
+A: The knowledge base states that the minimum business vintage requirement is 24 months.
+
+[INFO] OpenAI generation unavailable.
+[INFO] API credits/quota are unavailable.
+[INFO] Using local knowledge-base fallback.
+
+Q: What is the minimum business will take required for a loan?
+A: The knowledge base states that the minimum business vintage requirement is 24 months.
+
+[INFO] OpenAI generation unavailable.
+[INFO] API credits/quota are unavailable.
+[INFO] Using local knowledge-base fallback.
+
+Q: What is the minimum business loan amount?
+A: The Business Growth Loan has a stated minimum amount of ₹2,00,000.
+
+[INFO] OpenAI generation unavailable.
+[INFO] API credits/quota are unavailable.
+[INFO] Using local knowledge-base fallback.
+
+Q: What is the minimum loan amount?
+A: The Business Growth Loan has a stated minimum amount of ₹2,00,000.
+
+[INFO] OpenAI generation unavailable.
+[INFO] API credits/quota are unavailable.
+[INFO] Using local knowledge-base fallback.
+
+Q: What is the minimum and maximum loan amount?
+A: The knowledge base lists the Business Growth Loan amount as ₹2,00,000 to ₹25,00,000.
+
+[INFO] OpenAI generation unavailable.
+[INFO] API credits/quota are unavailable.
+[INFO] Using local knowledge-base fallback.
+
+Q: What is the available loan repayment tenure?
+A: The available loan tenure is 12 to 60 months.

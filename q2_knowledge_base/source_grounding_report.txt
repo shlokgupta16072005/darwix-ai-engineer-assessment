@@ -1,0 +1,237 @@
+DARWIX AI — Q2 SOURCE-GROUNDING VERIFICATION
+Generated: 2026-10-24T11:35:44+05:30
+===========================================================================
+
+CASE 1: What is the minimum business vintage?
+---------------------------------------------------------------------------
+Mode: local_fallback
+Answer:
+The knowledge base states that the minimum business vintage requirement is 24 months.
+
+Number of sources: 3
+Source details:
+  Source 1:
+{
+    "rank": 1,
+    "score": 0.3517412998170145,
+    "raw_score": 0.03340796648368112,
+    "chunk_id": "faq.txt::chunk_4",
+    "source": "faq.txt",
+    "category": "faq",
+    "text": "Q4. How old must my business be?\nA. The business should have at least 24 months of continuous operation under the stated eligibility rule."
+}
+  Source 2:
+{
+    "rank": 2,
+    "score": 0.2511068441821597,
+    "raw_score": 0.40777351084882646,
+    "chunk_id": "faq.txt::chunk_1",
+    "source": "faq.txt",
+    "category": "faq",
+    "text": "Q1. What is the minimum loan amount?\nA. The Business Growth Loan has a stated minimum amount of ₹2,00,000."
+}
+  Source 3:
+{
+    "rank": 3,
+    "score": 0.24206429869135918,
+    "raw_score": 0.11706429869135919,
+    "chunk_id": "eligibility_rules.pdf::chunk_2",
+    "source": "eligibility_rules.pdf",
+    "category": "eligibility",
+    "text": "Eligibility decision examples Business operating for 36 months: meets the stated business-vintage requirement, subject to other checks. Business operating for 18 months: does not meet the stated 24-month business-vintage requirement. Requested amount of ■1 lakh: below the stated minimum product amount of ■2 lakh. Requested amount of ■30 lakh: above the stated maximum product amount of ■25 lakh. Missing documents: do not mark the customer as rejected solely because documents are missing; request the"
+}
+Expected-answer phrase check: 1/1 phrases found
+Expected phrases found: 24 months
+Expected phrases missing: None
+Sources returned: YES
+Grounding verdict: MANUAL REVIEW REQUIRED — verify that each factual claim is supported by the cited source text.
+
+CASE 2: What documents are required to apply?
+---------------------------------------------------------------------------
+Mode: local_fallback
+Answer:
+Typical requirements mentioned in the knowledge base include identity proof, PAN or applicable tax identification information, business proof or registration, where applicable, recent business bank statements or other requested financial records. Additional documents may be requested depending on the application.
+
+Number of sources: 3
+Source details:
+  Source 1:
+{
+    "rank": 1,
+    "score": 0.32469031208864896,
+    "raw_score": 0.21135697875531567,
+    "chunk_id": "faq.txt::chunk_6",
+    "source": "faq.txt",
+    "category": "faq",
+    "text": "Q6. What documents are needed?\nA. Typical requirements include identity proof, PAN or applicable tax identification information, business proof/registration where applicable, and recent business bank statements or other requested financial records."
+}
+  Source 2:
+{
+    "rank": 2,
+    "score": 0.21855809027535444,
+    "raw_score": 0.03855809027535445,
+    "chunk_id": "application_process.txt::chunk_1",
+    "source": "application_process.txt",
+    "category": "application_process",
+    "text": "- Basic identity/business information is available Stage 3 - Document collection Typical information/documents: - Identity proof - PAN or applicable tax identification - Business proof/registration where applicable - Recent business bank statements or other requested financial records Stage 4 - Assessment The information may be reviewed and verified. Additional documents may be requested. Stage 5 - Decision Final approval is subject to verification and internal assessment. Stage 6 - Customer communication The customer can be informed of the next step."
+}
+  Source 3:
+{
+    "rank": 3,
+    "score": 0.1861185116493308,
+    "raw_score": 0.0861185116493308,
+    "chunk_id": "eligibility_rules.pdf::chunk_1",
+    "source": "eligibility_rules.pdf",
+    "category": "eligibility",
+    "text": "Applications are subject to internal assessment and verification. Required documents Identity proof such as an accepted government-issued identity document. PAN or applicable tax identification information. Proof of business existence/registration, where applicable. Recent business bank statements or other financial records requested during assessment. Additional documents may be requested depending on the application. Eligibility decision examples Business operating for 36 months: meets the stated business-vintage requirement, subject to other checks."
+}
+Expected-answer phrase check: 1/1 phrases found
+Expected phrases found: documents
+Expected phrases missing: None
+Sources returned: YES
+Grounding verdict: MANUAL REVIEW REQUIRED — verify that each factual claim is supported by the cited source text.
+
+CASE 3: What is the maximum loan amount?
+---------------------------------------------------------------------------
+Mode: local_fallback
+Answer:
+The knowledge base states that the maximum Business Growth Loan amount is 25 lakh (25,00,000 rupees).
+
+Number of sources: 3
+Source details:
+  Source 1:
+{
+    "rank": 1,
+    "score": 0.9996670614360763,
+    "raw_score": 0.6546670614360763,
+    "chunk_id": "faq.txt::chunk_2",
+    "source": "faq.txt",
+    "category": "faq",
+    "text": "Q2. What is the maximum loan amount?\nA. The stated maximum amount is ₹25,00,000."
+}
+  Source 2:
+{
+    "rank": 2,
+    "score": 0.46674256256641156,
+    "raw_score": 0.33507589589974485,
+    "chunk_id": "faq.txt::chunk_1",
+    "source": "faq.txt",
+    "category": "faq",
+    "text": "Q1. What is the minimum loan amount?\nA. The Business Growth Loan has a stated minimum amount of ₹2,00,000."
+}
+  Source 3:
+{
+    "rank": 3,
+    "score": 0.21360376192827557,
+    "raw_score": 0.05860376192827555,
+    "chunk_id": "loan_products.pdf::chunk_2",
+    "source": "loan_products.pdf",
+    "category": "product",
+    "text": "business information and internal assessment. Do not quote a guaranteed rate before assessment. Security: Security/collateral requirements, if any, depend on the application and approved product terms. Indicative product information [('Item', 'Information'), ('Loan amount', '■2 lakh - ■25 lakh'), ('Tenure', '12 - 60 months'), ('Minimum business vintage', '24 months'), ('Initial assessment', 'Typically 1-2 business days after required information is received'), ('Pricing', 'Customer-specific; not guaranteed before assessment')] Important communication rules Do not promise loan approval."
+}
+Expected-answer phrase check: 1/1 phrases found
+Expected phrases found: 25,00,000
+Expected phrases missing: None
+Sources returned: YES
+Grounding verdict: MANUAL REVIEW REQUIRED — verify that each factual claim is supported by the cited source text.
+
+CASE 4: What is the current interest rate?
+---------------------------------------------------------------------------
+Mode: local_fallback
+Answer:
+The knowledge base does not provide a live or current interest rate. Pricing is customer-specific and depends on the application and assessment. I can arrange human follow-up for current pricing.
+
+Number of sources: 3
+Source details:
+  Source 1:
+{
+    "rank": 1,
+    "score": 0.5755457868513254,
+    "raw_score": 0.24387912018465877,
+    "chunk_id": "faq.txt::chunk_8",
+    "source": "faq.txt",
+    "category": "faq",
+    "text": "Q8. What interest rate will I get?\nA. Pricing is customer-specific. The agent must not guarantee a rate before the approved pricing process."
+}
+  Source 2:
+{
+    "rank": 2,
+    "score": 0.47733702063789546,
+    "raw_score": 0.1340036873045621,
+    "chunk_id": "faq.txt::chunk_16",
+    "source": "faq.txt",
+    "category": "faq",
+    "text": "Q16. Do you have today's interest rates?\nA. The prototype knowledge base does not contain a live rate table. The agent should say that current live pricing is unavailable and offer human follow-up rather than inventing a rate."
+}
+  Source 3:
+{
+    "rank": 3,
+    "score": 0.2901556725942743,
+    "raw_score": 0.26015567259427436,
+    "chunk_id": "faq.txt::chunk_2",
+    "source": "faq.txt",
+    "category": "faq",
+    "text": "Q2. What is the maximum loan amount?\nA. The stated maximum amount is ₹25,00,000."
+}
+Expected-answer phrase check: 3/3 phrases found
+Expected phrases found: current interest rate, customer-specific, human follow-up
+Expected phrases missing: None
+Sources returned: YES
+Grounding verdict: MANUAL REVIEW REQUIRED — verify that each factual claim is supported by the cited source text.
+
+CASE 5: Can a business operating for 12 months qualify?
+---------------------------------------------------------------------------
+Mode: local_fallback
+Answer:
+The knowledge base states a minimum business vintage requirement of 24 months. Therefore, a business operating for only one year does not meet that stated business-vintage requirement.
+
+Number of sources: 3
+Source details:
+  Source 1:
+{
+    "rank": 1,
+    "score": 0.6534961826555856,
+    "raw_score": 0.2784961826555856,
+    "chunk_id": "eligibility_rules.pdf::chunk_2",
+    "source": "eligibility_rules.pdf",
+    "category": "eligibility",
+    "text": "Eligibility decision examples Business operating for 36 months: meets the stated business-vintage requirement, subject to other checks. Business operating for 18 months: does not meet the stated 24-month business-vintage requirement. Requested amount of ■1 lakh: below the stated minimum product amount of ■2 lakh. Requested amount of ■30 lakh: above the stated maximum product amount of ■25 lakh. Missing documents: do not mark the customer as rejected solely because documents are missing; request the"
+}
+  Source 2:
+{
+    "rank": 2,
+    "score": 0.5572438190990495,
+    "raw_score": 0.1822438190990495,
+    "chunk_id": "eligibility_rules.pdf::chunk_1",
+    "source": "eligibility_rules.pdf",
+    "category": "eligibility",
+    "text": "Applications are subject to internal assessment and verification. Required documents Identity proof such as an accepted government-issued identity document. PAN or applicable tax identification information. Proof of business existence/registration, where applicable. Recent business bank statements or other financial records requested during assessment. Additional documents may be requested depending on the application. Eligibility decision examples Business operating for 36 months: meets the stated business-vintage requirement, subject to other checks."
+}
+  Source 3:
+{
+    "rank": 3,
+    "score": 0.45319616837668175,
+    "raw_score": 0.053196168376681736,
+    "chunk_id": "eligibility_rules.pdf::chunk_0",
+    "source": "eligibility_rules.pdf",
+    "category": "eligibility",
+    "text": "NovaFin Business Loan - Eligibility & Document Rules v1.1 Minimum eligibility Applicant must be an adult and legally able to enter into the relevant agreement. Business must have operated continuously for at least 24 months. Applicant must provide sufficient information for identity, business and financial verification. Requested loan amount must fall within the product's available range. Applications are subject to internal assessment and verification. Required documents Identity proof such as an accepted government-issued identity document."
+}
+Expected-answer phrase check: 2/2 phrases found
+Expected phrases found: one year, 24 months
+Expected phrases missing: None
+Sources returned: YES
+Grounding verdict: MANUAL REVIEW REQUIRED — verify that each factual claim is supported by the cited source text.
+
+===========================================================================
+SUMMARY
+Total cases: 5
+Cases executed: 5
+Cases with execution errors: 0
+Cases passing expected-phrase checks: 5/5
+Cases returning sources: 5/5
+
+IMPORTANT LIMITATIONS:
+- Phrase matching is a basic string check, not a factuality evaluation.
+- Returning sources does not prove the answer is supported by them.
+- Manually compare every answer claim with its retrieved source text.
+- A fallback response is not evidence that OpenAI generation succeeded.

@@ -149,6 +149,22 @@ def contains_any(
     )
 
 
+def is_asr_loan_amount_query(question: str) -> bool:
+    """Recognize a narrow set of loan-amount phrases that ASR may distort.
+
+    This is intentionally conservative: it requires an amount-related word
+    and an explicit maximum/minimum/loan cue. It does not accept arbitrary
+    questions merely because they contain the word "amount".
+    """
+    normalized = " ".join((question or "").lower().split())
+    has_amount_word = "amount" in normalized or "low amount" in normalized
+    has_loan_amount_cue = any(
+        term in normalized for term in ("maximum", "max", "minimum", "loan")
+    )
+    has_asr_variant = "low amount" in normalized
+    return has_amount_word and has_loan_amount_cue and has_asr_variant
+
+
 def extract_business_vintage(
     results: List[Dict]
 ) -> str | None:
@@ -346,42 +362,64 @@ def fallback_answer(
     # BUSINESS VINTAGE
     # ========================================================
 
-    if (
-        "business vintage" in question_lower
-        or (
-            "business" in question_lower
-            and "how old" in question_lower
-        )
-        or (
-            "minimum" in question_lower
-            and "business" in question_lower
-        )
-        or (
-            "business" in question_lower
-            and "operated" in question_lower
-        )
-    ):
+    normalized_question = " ".join(question_lower.split())
 
-        vintage = extract_business_vintage(
-            results
+    has_explicit_vintage_term = any(
+        term in normalized_question
+        for term in (
+            "business vintage",
+            "business-vintage",
+            "business age",
+            "how old",
+            "months old",
+            "years old",
+            "business operating",
+            "operated for",
+            "business has operated",
+            "business been operating",
+            "length of business operation",
         )
+    )
+
+    # Recover malformed ASR-style vintage questions, without
+    # classifying ordinary loan-amount questions as vintage.
+    has_asr_vintage_cues = (
+        "business" in normalized_question
+        and "minimum" in normalized_question
+        and any(
+            term in normalized_question
+            for term in ("required", "requirement")
+        )
+        and not any(
+            term in normalized_question
+            for term in (
+                "loan amount",
+                "business loan amount",
+                "minimum amount",
+                "maximum amount",
+                "how much",
+            )
+        )
+    )
+
+    if has_explicit_vintage_term or has_asr_vintage_cues:
+
+        vintage = extract_business_vintage(results)
 
         if vintage:
-
             return (
                 "The knowledge base states that the "
-                f"minimum business vintage requirement is "
+                "minimum business vintage requirement is "
                 f"{vintage}."
             )
 
-        # Do not fall through to unrelated facts, such as loan amount
-        # or loan tenure, when business-vintage evidence is missing.
+        # Do not fall through to unrelated facts when
+        # business-vintage evidence is missing.
         return (
             "I could not verify the minimum business-vintage "
             "requirement from the retrieved information. "
             "I can arrange human follow-up for this question."
         )
-
 
     # ========================================================
     # ONE-YEAR BUSINESS
@@ -406,6 +444,58 @@ def fallback_answer(
                 "one year does not meet that stated "
                 "business-vintage requirement."
             )
+
+
+    # ========================================================
+    # LOAN TENURE
+    # ========================================================
+
+    asks_tenure = any(
+        term in question_lower
+        for term in (
+            "tenure",
+            "repayment period",
+            "repayment term",
+            "loan duration",
+            "how long can i take the loan",
+            "how long to repay",
+            "how long is the loan",
+        )
+    )
+
+    if asks_tenure:
+        # Require the duration and a tenure-related cue to appear in the
+        # same retrieved chunk. This avoids confusing business vintage
+        # (24 months) with the loan repayment tenure (12 to 60 months).
+        for result in results:
+            chunk = str(result.get("text", ""))
+            chunk_lower = chunk.lower()
+
+            has_tenure_context = any(
+                term in chunk_lower
+                for term in (
+                    "tenure",
+                    "repayment period",
+                    "repayment term",
+                    "loan duration",
+                    "how long can i take the loan",
+                    "how long to repay",
+                )
+            )
+
+            tenure_match = re.search(
+                r"\b12\s*(?:to|-|–|—)\s*60\s*months?\b",
+                chunk_lower,
+            )
+
+            if has_tenure_context and tenure_match:
+                return "The available loan tenure is 12 to 60 months."
+
+        return (
+            "I could not verify the available loan tenure from the "
+            "retrieved information. I can arrange human follow-up "
+            "for this question."
+        )
 
 
     # ========================================================
@@ -444,10 +534,21 @@ def fallback_answer(
         # For maximum-amount questions, use only explicit maximum-limit
         # evidence. Do not treat an example of an oversized request
         # (for example, 30 lakh) as a product limit.
-        asks_maximum = any(
-            term in question_lower
-            for term in ("maximum", "max", "highest")
-        ) and "amount" in question_lower
+
+        asks_for_both_limits = (
+            any(term in question_lower for term in ("minimum", "min", "lowest"))
+            and any(term in question_lower for term in ("maximum", "max", "highest"))
+            and "amount" in question_lower
+        )
+
+        asks_maximum = (
+            any(
+                term in question_lower
+                for term in ("maximum", "max", "highest")
+            )
+            and "amount" in question_lower
+            and not asks_for_both_limits
+        )
 
         if asks_maximum:
             for result in results:
@@ -469,6 +570,38 @@ def fallback_answer(
                         "Business Growth Loan amount is 25 lakh "
                         "(25,00,000 rupees)."
                     )
+
+
+        asks_minimum_only = (
+            any(
+                term in question_lower
+                for term in ("minimum", "min", "lowest")
+            )
+            and not any(
+                term in question_lower
+                for term in ("maximum", "max", "highest")
+            )
+            and "amount" in question_lower
+        )
+
+        if asks_minimum_only:
+            for result in results:
+                chunk = str(result.get("text", ""))
+                chunk_lower = chunk.lower()
+
+                if (
+                    "minimum loan amount" in chunk_lower
+                    or "minimum amount" in chunk_lower
+                    or "minimum loan" in chunk_lower
+                ) and (
+                    "2,00,000" in chunk
+                    or "2 lakh" in chunk_lower
+                ):
+                    return (
+                        "The Business Growth Loan has a stated "
+                        "minimum amount of ₹2,00,000."
+                    )
+
 
         amounts = extract_loan_amounts(
             results
@@ -1011,6 +1144,39 @@ def answer_question(
         }
 
     # --------------------------------------------------------
+    # OUT-OF-DOMAIN GUARD
+    # --------------------------------------------------------
+
+    question_lower = question.lower()
+
+    loan_domain_terms = (
+        "loan", "business", "borrow", "lending", "lender",
+        "interest rate", "pricing", "emi", "repayment",
+        "document", "documents", "paperwork", "bank statement",
+        "eligibility", "eligible", "qualify", "qualification",
+        "application", "apply", "pan", "tenure", "approval",
+        "callback", "call back", "human", "representative",
+        "business vintage", "business age", "minimum amount",
+        "maximum amount", "loan amount", "financial records",
+    )
+
+    if (
+        not any(term in question_lower for term in loan_domain_terms)
+        and not is_asr_loan_amount_query(question)
+    ):
+        return {
+            "answer": (
+                "I can help with business-loan questions, "
+                "including eligibility, documents, loan amounts, "
+                "repayment tenure, and pricing. I could not find "
+                "this information in the knowledge base. "
+                "I can arrange human follow-up for this question."
+            ),
+            "mode": "out_of_domain",
+            "sources": []
+        }
+
+    # --------------------------------------------------------
     # RETRIEVAL
     # --------------------------------------------------------
 
@@ -1059,6 +1225,65 @@ def answer_question(
             question,
             results
         )
+
+        # Use the evidence-grounded local handler for business-vintage
+        # questions so loan tenure or loan amounts cannot override
+        # business eligibility evidence.
+        question_lower = question.lower()
+        normalized_question = " ".join(question_lower.split())
+
+        has_explicit_vintage_term = any(
+            term in normalized_question
+            for term in (
+                "business vintage",
+                "business-vintage",
+                "business age",
+                "how old",
+                "months old",
+                "years old",
+                "business operating",
+                "operated for",
+                "business has operated",
+                "business been operating",
+                "length of business operation",
+            )
+        )
+
+        # Recover a narrow class of malformed ASR transcripts, such as:
+        # "What is the minimum business will take required for a loan?"
+        # Do not classify normal loan-amount questions as vintage questions.
+        has_asr_vintage_cues = (
+            "business" in normalized_question
+            and "minimum" in normalized_question
+            and any(
+                term in normalized_question
+                for term in ("required", "requirement")
+            )
+            and not any(
+                term in normalized_question
+                for term in (
+                    "loan amount",
+                    "business loan amount",
+                    "minimum amount",
+                    "maximum amount",
+                    "how much",
+                )
+            )
+        )
+
+        asks_business_vintage = (
+            has_explicit_vintage_term or has_asr_vintage_cues
+        )
+
+        if asks_business_vintage:
+            grounded_answer = fallback_answer(question, results)
+            grounded_lower = grounded_answer.lower()
+
+            if (
+                "minimum business vintage requirement is" in grounded_lower
+                and "could not verify" not in grounded_lower
+            ):
+                answer = grounded_answer
 
         return {
             "answer": answer,
@@ -1129,6 +1354,47 @@ def answer_question(
 # PRINT RESULT
 # ============================================================
 
+def format_answer_with_citations(
+    answer: str,
+    sources: List[Dict],
+) -> str:
+    """Append unique source and chunk references to an answer."""
+
+    answer = str(answer or "")
+
+    if not sources:
+        return answer
+
+    citations = []
+    seen = set()
+
+    for source in sources:
+        if not isinstance(source, dict):
+            continue
+
+        filename = str(source.get("source", "") or "").strip()
+        chunk_id = str(source.get("chunk_id", "") or "").strip()
+
+        if not filename:
+            continue
+
+        citation = f"{filename} — {chunk_id}" if chunk_id else filename
+
+        if citation not in seen:
+            seen.add(citation)
+            citations.append(citation)
+
+    if not citations:
+        return answer
+
+    citation_text = "\n".join(f"- {citation}" for citation in citations)
+
+    if answer:
+        return f"{answer}\n\nRetrieved sources:\n{citation_text}"
+
+    return f"Retrieved sources:\n{citation_text}"
+
+
 def print_answer(
     question: str,
     result: Dict
@@ -1162,9 +1428,9 @@ def print_answer(
     )
 
     print(
-        result.get(
-            "answer",
-            ""
+        format_answer_with_citations(
+            result.get("answer", ""),
+            result.get("sources", []),
         )
     )
 

@@ -7,53 +7,142 @@
   "audio_file": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q1_voice_agent\\transcripts\\temp_audio.wav",
   "audio_duration_seconds": 4.992,
   "playback_speed": 1.0,
-  "chunk_seconds": 4.0,
+  "chunk_seconds": 2.0,
   "overlap_seconds": 0.5,
-  "chunks_processed": 2,
-  "signals_emitted": [],
-  "elapsed_wall_seconds": 5.315,
+  "chunks_processed": 4,
+  "signals_emitted": [
+    "callback_needed"
+  ],
+  "elapsed_wall_seconds": 13.109,
   "asr_latency_ms": {
-    "median": 1155.719,
-    "p50": 1122.236,
-    "p95": 1189.202
+    "median": 1550.015,
+    "p50": 1550.015,
+    "p95": 4017.243
   },
   "signal_latency_ms": {
-    "median": 1.224,
-    "p50": 0.139,
-    "p95": 2.31
+    "median": 0.415,
+    "p50": 0.415,
+    "p95": 2.432
+  },
+  "dashboard_delivery": {
+    "enabled": false,
+    "attempts": 0,
+    "successes": 0,
+    "failures": 0,
+    "status": "disabled"
   },
   "dashboard_delivery_latency_ms": {
-    "median": 0.001,
-    "p50": 0.001,
-    "p95": 0.001
+    "median": null,
+    "p50": null,
+    "p95": null
   },
-  "latency_scope": "ASR and local signal processing are measured separately. Dashboard delivery is measured separately. These are not a validated live-telephony end-to-end latency measurement.",
+  "latency_scope": "ASR and local signal processing are measured separately. Dashboard attempt latency is recorded for every attempt; dashboard_delivery_latency_ms summarizes successful deliveries only. Failed attempts are excluded from successful-delivery latency statistics. These measurements are not validated live-telephony end-to-end latency.",
   "events": [
     {
       "chunk": 1,
       "audio_start_seconds": 0.0,
-      "audio_end_seconds": 4.0,
-      "partial_transcript": "What is today's interest rate?",
-      "chunk_transcript": "What is today's interest rate?",
+      "audio_end_seconds": 2.0,
+      "partial_transcript": "I want to",
+      "chunk_transcript": "I want to",
+      "asr_quality": {
+        "segment_count": 1,
+        "avg_logprob": -0.3198,
+        "max_no_speech_prob": 0.546,
+        "max_compression_ratio": 0.5294,
+        "quality_suspect": false,
+        "quality_reasons": []
+      },
       "detected_signals": [],
       "nudges": [],
-      "asr_latency_ms": 1189.202,
-      "signal_latency_ms": 2.31,
-      "chunk_latency_ms": 1191.512,
-      "audio_chunk_duration_seconds": 4.0
+      "asr_latency_ms": 1113.258,
+      "signal_latency_ms": 2.762,
+      "chunk_latency_ms": 1116.02,
+      "audio_chunk_duration_seconds": 2.0,
+      "dashboard_delivery_success": null,
+      "dashboard_delivery_attempt_latency_ms": null,
+      "dashboard_delivery_latency_ms": null
     },
     {
       "chunk": 2,
-      "audio_start_seconds": 3.5,
+      "audio_start_seconds": 1.5,
+      "audio_end_seconds": 3.5,
+      "partial_transcript": "I want to speak to a human representative.",
+      "chunk_transcript": "I want to speak to a human representative.",
+      "asr_quality": {
+        "segment_count": 1,
+        "avg_logprob": -0.471,
+        "max_no_speech_prob": 0.0737,
+        "max_compression_ratio": 0.8936,
+        "quality_suspect": false,
+        "quality_reasons": []
+      },
+      "detected_signals": [
+        "callback_needed"
+      ],
+      "nudges": [
+        {
+          "signal": "callback_needed",
+          "priority": "high",
+          "nudge": "Arrange a human follow-up according to the approved workflow.",
+          "method": "keyword_rule",
+          "created_at": "2026-10-24T14:37:21.376477+00:00"
+        }
+      ],
+      "asr_latency_ms": 1181.614,
+      "signal_latency_ms": 0.562,
+      "chunk_latency_ms": 1182.176,
+      "audio_chunk_duration_seconds": 2.0,
+      "dashboard_delivery_success": null,
+      "dashboard_delivery_attempt_latency_ms": null,
+      "dashboard_delivery_latency_ms": null
+    },
+    {
+      "chunk": 3,
+      "audio_start_seconds": 3.0,
       "audio_end_seconds": 4.992,
-      "partial_transcript": "What is today's interest rate?",
-      "chunk_transcript": "",
+      "partial_transcript": "I want to speak to a human representative. but isn't it too?",
+      "chunk_transcript": "but isn't it too?",
+      "asr_quality": {
+        "segment_count": 1,
+        "avg_logprob": -0.9328,
+        "max_no_speech_prob": 0.3173,
+        "max_compression_ratio": 0.68,
+        "quality_suspect": false,
+        "quality_reasons": []
+      },
       "detected_signals": [],
       "nudges": [],
-      "asr_latency_ms": 1122.236,
-      "signal_latency_ms": 0.139,
-      "chunk_latency_ms": 1122.374,
-      "audio_chunk_duration_seconds": 1.492
+      "asr_latency_ms": 1918.416,
+      "signal_latency_ms": 0.269,
+      "chunk_latency_ms": 1918.685,
+      "audio_chunk_duration_seconds": 1.992,
+      "dashboard_delivery_success": null,
+      "dashboard_delivery_attempt_latency_ms": null,
+      "dashboard_delivery_latency_ms": null
+    },
+    {
+      "chunk": 4,
+      "audio_start_seconds": 4.5,
+      "audio_end_seconds": 4.992,
+      "partial_transcript": "I want to speak to a human representative. but isn't it too?",
+      "chunk_transcript": "",
+      "asr_quality": {
+        "segment_count": 0,
+        "avg_logprob": null,
+        "max_no_speech_prob": null,
+        "max_compression_ratio": null,
+        "quality_suspect": false,
+        "quality_reasons": []
+      },
+      "detected_signals": [],
+      "nudges": [],
+      "asr_latency_ms": 4387.625,
+      "signal_latency_ms": 0.232,
+      "chunk_latency_ms": 4387.857,
+      "audio_chunk_duration_seconds": 0.492,
+      "dashboard_delivery_success": null,
+      "dashboard_delivery_attempt_latency_ms": null,
+      "dashboard_delivery_latency_ms": null
     }
   ]
 }

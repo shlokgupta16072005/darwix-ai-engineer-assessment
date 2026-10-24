@@ -1,0 +1,123 @@
+{
+  "evaluation_timestamp_utc": "2026-10-23T05:01:02.918769+00:00",
+  "model": "faster-whisper base",
+  "device": "cpu",
+  "compute_type": "int8",
+  "beam_size": 5,
+  "scoring_normalization": "Lowercase and remove punctuation; whitespace normalized. No spelling correction or translation.",
+  "overall": {
+    "recording_count": 4,
+    "reference_word_count": 48,
+    "word_errors": 5,
+    "micro_wer": 0.10416666666666667,
+    "micro_wer_percent": 10.42
+  },
+  "by_language_group": {
+    "Filipino": {
+      "recording_count": 1,
+      "reference_word_count": 15,
+      "word_errors": 1,
+      "micro_wer": 0.06666666666666667,
+      "micro_wer_percent": 6.67
+    },
+    "Filipino/Taglish": {
+      "recording_count": 1,
+      "reference_word_count": 13,
+      "word_errors": 2,
+      "micro_wer": 0.15384615384615385,
+      "micro_wer_percent": 15.38
+    },
+    "Indonesian": {
+      "recording_count": 2,
+      "reference_word_count": 20,
+      "word_errors": 2,
+      "micro_wer": 0.1,
+      "micro_wer_percent": 10.0
+    }
+  },
+  "results": [
+    {
+      "case": "ph_coverage",
+      "language_group": "Filipino",
+      "audio_file": "q3_multilingual/sample_inputs/sector_q3/ph_coverage.mp3",
+      "reference_file": "q3_multilingual/sample_inputs/sector_q3/ph_coverage.txt",
+      "requested_language": "tl",
+      "detected_language": "tl",
+      "language_probability": 1,
+      "reference_transcript": "Ano ang coverage ng life insurance policy? Gusto ko pong malaman kung ano ang kasama.",
+      "hypothesis_transcript": "Ano ang coverage ng life insurance policy. Gusto ko pang malaman kung ano ang kasama.",
+      "reference_word_count": 15,
+      "hypothesis_word_count": 15,
+      "substitutions": 1,
+      "deletions": 0,
+      "insertions": 0,
+      "word_errors": 1,
+      "wer": 0.06666666666666667,
+      "wer_percent": 6.67
+    },
+    {
+      "case": "ph_premium_taglish",
+      "language_group": "Filipino/Taglish",
+      "audio_file": "q3_multilingual/sample_inputs/sector_q3/ph_premium_taglish.mp3",
+      "reference_file": "q3_multilingual/sample_inputs/sector_q3/ph_premium_taglish.txt",
+      "requested_language": "tl",
+      "detected_language": "tl",
+      "language_probability": 1,
+      "reference_transcript": "Mahal ang premium ng policy na ito. Can you explain the available options?",
+      "hypothesis_transcript": "Mahalang premium ng policy na ito. Can you explain the available options?",
+      "reference_word_count": 13,
+      "hypothesis_word_count": 12,
+      "substitutions": 1,
+      "deletions": 1,
+      "insertions": 0,
+      "word_errors": 2,
+      "wer": 0.15384615384615385,
+      "wer_percent": 15.38
+    },
+    {
+      "case": "id_colloquial",
+      "language_group": "Indonesian",
+      "audio_file": "q3_multilingual/sample_inputs/sector_q3/id_colloquial.mp3",
+      "reference_file": "q3_multilingual/sample_inputs/sector_q3/id_colloquial.txt",
+      "requested_language": "id",
+      "detected_language": "id",
+      "language_probability": 1,
+      "reference_transcript": "Kok cicilannya mahal banget? Bisa jelaskan biaya dan dendanya?",
+      "hypothesis_transcript": "Kok cicilannya mahal banget? Bisa jelaskan biaya dan dendanya?",
+      "reference_word_count": 9,
+      "hypothesis_word_count": 9,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "word_errors": 0,
+      "wer": 0.0,
+      "wer_percent": 0.0
+    },
+    {
+      "case": "id_installment",
+      "language_group": "Indonesian",
+      "audio_file": "q3_multilingual/sample_inputs/sector_q3/id_installment.mp3",
+      "reference_file": "q3_multilingual/sample_inputs/sector_q3/id_installment.txt",
+      "requested_language": "id",
+      "detected_language": "id",
+      "language_probability": 1,
+      "reference_transcript": "Berapa cicilan untuk consumer financing? Saya ingin memahami biaya dan tenornya.",
+      "hypothesis_transcript": "Berapa cichilan untuk kesamer-financing, saya ingin memahami biaya dan tenornya.",
+      "reference_word_count": 11,
+      "hypothesis_word_count": 11,
+      "substitutions": 2,
+      "deletions": 0,
+      "insertions": 0,
+      "word_errors": 2,
+      "wer": 0.18181818181818182,
+      "wer_percent": 18.18
+    }
+  ],
+  "limitations": [
+    "Only four prerecorded, synthetic test recordings were evaluated.",
+    "WER on this small sample is not a general measure of real-customer accuracy.",
+    "Filipino/Taglish and Indonesian results are reported separately.",
+    "Punctuation and letter case are ignored; lexical differences count as errors.",
+    "This measures ASR transcription, not chatbot response quality or live-call latency."
+  ]
+}

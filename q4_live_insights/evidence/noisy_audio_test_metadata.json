@@ -1,0 +1,14 @@
+{
+  "source_file": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q1_voice_agent\\transcripts\\temp_audio.wav",
+  "test_file": "C:\\Users\\Lenovo\\Desktop\\Darwix AI\\q4_live_insights\\evidence\\noisy_audio_test.wav",
+  "method": "synthetic additive white Gaussian noise",
+  "random_seed": 20261024,
+  "target_snr_db": 10.0,
+  "source_rms": 0.08356386537331467,
+  "noise_rms_before_mixing": 0.026425214466735097,
+  "duration_seconds": 4.992,
+  "sample_rate_hz": 16000,
+  "channels": 1,
+  "sample_width_bits": 16,
+  "note": "Controlled synthetic noise test, not a real-world noisy call recording."
+}

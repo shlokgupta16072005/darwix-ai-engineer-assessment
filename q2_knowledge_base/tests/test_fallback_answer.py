@@ -181,3 +181,59 @@ def test_maximum_amount_asr_variation_returns_supported_limit():
 
     assert "25,00,000" in answer or "25 lakh" in answer
     assert "30 lakh" not in answer
+
+
+def test_loan_tenure_does_not_use_business_vintage():
+    results = [{
+        "source": "faq.txt",
+        "category": "faq",
+        "score": 0.8,
+        "text": (
+            "The available tenure is 12 to 60 months. "
+            "The business should have at least 24 months "
+            "of continuous operation under the stated eligibility rule."
+        ),
+    }]
+
+    answer = fallback_answer("What is the loan tenure?", results).lower()
+
+    assert "12 to 60 months" in answer
+    assert "business vintage" not in answer
+
+
+def test_misspelled_business_vintage_question_does_not_guess():
+    results = [{
+        "source": "faq.txt",
+        "category": "faq",
+        "score": 0.8,
+        "text": (
+            "The minimum loan amount is 2 lakh. "
+            "The available tenure is 12 to 60 months."
+        ),
+    }]
+
+    answer = fallback_answer(
+        "What is the minimum business will take required for a loan?",
+        results,
+    ).lower()
+
+    assert "24 months" not in answer
+    assert "60 months" not in answer
+    assert "human follow-up" in answer
+
+
+def test_maximum_or_low_amount_asr_variation_returns_supported_limit():
+    results = [{
+        "source": "faq.txt",
+        "category": "faq",
+        "score": 0.8,
+        "text": (
+            "The stated maximum loan amount is 25 lakh. "
+            "The available tenure is 12 to 60 months."
+        ),
+    }]
+
+    answer = fallback_answer("What is the maximum or low amount?", results).lower()
+
+    assert "25 lakh" in answer
+    assert "60 months" not in answer

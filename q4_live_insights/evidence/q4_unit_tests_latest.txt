@@ -1,0 +1,52 @@
+python : test_empty_asr_text_returns_empty (test_audio_replay_metrics.TestAudioReplayMetrics.test_empty_asr_text_returns_empty) ... ok
+At line:1 char:1
++ python -m unittest discover -s .\q4_live_insights\tests -v *> .\q4_li ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_empty_asr_...s_empty) ... ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+test_empty_values_return_zero (test_audio_replay_metrics.TestAudioReplayMetrics.test_empty_values_return_zero) ... ok
+test_extra_whitespace_is_normalized (test_audio_replay_metrics.TestAudioReplayMetrics.test_extra_whitespace_is_normalized) ... ok
+test_invalid_percentile_is_rejected (test_audio_replay_metrics.TestAudioReplayMetrics.test_invalid_percentile_is_rejected) ... ok
+test_normal_asr_text_is_preserved (test_audio_replay_metrics.TestAudioReplayMetrics.test_normal_asr_text_is_preserved) ... ok
+test_p50_matches_median_for_even_number_of_values (test_audio_replay_metrics.TestAudioReplayMetrics.test_p50_matches_median_for_even_number_of_values) ... ok
+test_p50_matches_middle_value_for_odd_number_of_values (test_audio_replay_metrics.TestAudioReplayMetrics.test_p50_matches_middle_value_for_odd_number_of_values)
+... ok
+test_p95_interpolates_between_observations (test_audio_replay_metrics.TestAudioReplayMetrics.test_p95_interpolates_between_observations) ... ok
+test_punctuation_only_asr_text_returns_empty (test_audio_replay_metrics.TestAudioReplayMetrics.test_punctuation_only_asr_text_returns_empty) ... ok
+test_question_punctuation_is_preserved (test_audio_replay_metrics.TestAudioReplayMetrics.test_question_punctuation_is_preserved) ... ok
+test_whitespace_asr_text_returns_empty (test_audio_replay_metrics.TestAudioReplayMetrics.test_whitespace_asr_text_returns_empty) ... ok
+test_audio_chunks_keep_order (test_nudge_engine.TestQ4Core.test_audio_chunks_keep_order) ... ok
+test_callback_request_is_detected (test_nudge_engine.TestQ4Core.test_callback_request_is_detected) ... ok
+test_compliance_gap_is_detected (test_nudge_engine.TestQ4Core.test_compliance_gap_is_detected) ... ok
+test_confidence_below_threshold_does_not_generate_nudge (test_nudge_engine.TestQ4Core.test_confidence_below_threshold_does_not_generate_nudge) ... ok
+test_cross_sell_opportunity_is_detected (test_nudge_engine.TestQ4Core.test_cross_sell_opportunity_is_detected) ... ok
+test_denial_of_guaranteed_approval_is_not_flagged (test_nudge_engine.TestQ4Core.test_denial_of_guaranteed_approval_is_not_flagged) ... ok
+test_duplicate_nudge_is_suppressed (test_nudge_engine.TestQ4Core.test_duplicate_nudge_is_suppressed) ... ok
+test_empty_audio_chunk_is_rejected (test_nudge_engine.TestQ4Core.test_empty_audio_chunk_is_rejected) ... ok
+test_explicit_compliance_risk_still_triggers (test_nudge_engine.TestQ4Core.test_explicit_compliance_risk_still_triggers) ... ok
+test_invalid_confidence_does_not_generate_nudge (test_nudge_engine.TestQ4Core.test_invalid_confidence_does_not_generate_nudge) ... ok
+test_keyword_rule_can_generate_nudge_without_confidence (test_nudge_engine.TestQ4Core.test_keyword_rule_can_generate_nudge_without_confidence) ... ok
+test_missing_confidence_does_not_generate_nudge (test_nudge_engine.TestQ4Core.test_missing_confidence_does_not_generate_nudge) ... ok
+test_negated_frustration_is_not_flagged (test_nudge_engine.TestQ4Core.test_negated_frustration_is_not_flagged) ... ok
+test_negated_payment_difficulty_is_not_flagged (test_nudge_engine.TestQ4Core.test_negated_payment_difficulty_is_not_flagged) ... ok
+test_non_bytes_audio_chunk_is_rejected (test_nudge_engine.TestQ4Core.test_non_bytes_audio_chunk_is_rejected) ... ok
+test_normal_conversation_produces_no_signals (test_nudge_engine.TestQ4Core.test_normal_conversation_produces_no_signals) ... ok
+test_payment_difficulty_is_detected (test_nudge_engine.TestQ4Core.test_payment_difficulty_is_detected) ... ok
+test_rising_frustration_is_detected (test_nudge_engine.TestQ4Core.test_rising_frustration_is_detected) ... ok
+test_unrelated_vehicle_mention_is_not_automatically_an_opportunity
+(test_nudge_engine.TestQ4Core.test_unrelated_vehicle_mention_is_not_automatically_an_opportunity) ... ok
+test_vehicle_coverage_question_is_not_cross_sell (test_nudge_engine.TestQ4Core.test_vehicle_coverage_question_is_not_cross_sell) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 0.005s
+
+OK
+PASS | clear_payment_difficulty | expected=['payment_difficulty'] actual=['payment_difficulty']
+PASS | ambiguous_fragment | expected=[] actual=[]
+PASS | normal_payment_question | expected=[] actual=[]
+PASS | clear_callback_request | expected=['callback_needed'] actual=['callback_needed']
+PASS | uncertain_callback_fragment | expected=[] actual=[]
+
+Summary: 5/5 passed
+Evidence saved: C:\Users\Lenovo\Desktop\Darwix AI\evidence\ambiguous_transcript_results.json

@@ -9,9 +9,9 @@
       "rising_frustration"
     ],
     "latency_ms": {
-      "median": 0.793,
-      "p50": 0.793,
-      "p95": 1.693,
+      "median": 1.186,
+      "p50": 1.186,
+      "p95": 1.889,
       "measurement_scope": "local transcript processing only; excludes ASR, audio transport, network and dashboard delivery"
     },
     "events": [
@@ -20,8 +20,8 @@
         "partial_transcript": "Hello, I am calling about my payment.",
         "detected_signals": [],
         "nudges": [],
-        "processing_ms": 0.019,
-        "chunk_latency_ms": 1.693
+        "processing_ms": 0.018,
+        "chunk_latency_ms": 1.889
       },
       {
         "chunk": 2,
@@ -33,14 +33,13 @@
           {
             "signal": "payment_difficulty",
             "priority": "medium",
-            "confidence": 1.0,
             "nudge": "Explore approved payment-support options or offer a human callback.",
             "method": "keyword_rule",
-            "created_at": "2026-10-15T05:15:16.307188+00:00"
+            "created_at": "2026-10-23T02:30:39.920040+00:00"
           }
         ],
-        "processing_ms": 0.094,
-        "chunk_latency_ms": 0.637
+        "processing_ms": 0.088,
+        "chunk_latency_ms": 1.58
       },
       {
         "chunk": 3,
@@ -52,14 +51,13 @@
           {
             "signal": "rising_frustration",
             "priority": "high",
-            "confidence": 1.0,
             "nudge": "Acknowledge the customer's concern, listen carefully, and respond calmly.",
             "method": "keyword_rule",
-            "created_at": "2026-10-15T05:15:16.437986+00:00"
+            "created_at": "2026-10-23T02:30:40.039624+00:00"
           }
         ],
-        "processing_ms": 0.09,
-        "chunk_latency_ms": 0.699
+        "processing_ms": 0.077,
+        "chunk_latency_ms": 0.861
       },
       {
         "chunk": 4,
@@ -71,14 +69,13 @@
           {
             "signal": "callback_needed",
             "priority": "high",
-            "confidence": 1.0,
             "nudge": "Arrange a human follow-up according to the approved workflow.",
             "method": "keyword_rule",
-            "created_at": "2026-10-15T05:15:16.544411+00:00"
+            "created_at": "2026-10-23T02:30:40.155413+00:00"
           }
         ],
-        "processing_ms": 0.078,
-        "chunk_latency_ms": 0.793
+        "processing_ms": 0.081,
+        "chunk_latency_ms": 1.14
       },
       {
         "chunk": 5,
@@ -86,7 +83,7 @@
         "detected_signals": [],
         "nudges": [],
         "processing_ms": 0.034,
-        "chunk_latency_ms": 0.965
+        "chunk_latency_ms": 1.186
       }
     ]
   },
@@ -98,9 +95,9 @@
       "compliance_gap"
     ],
     "latency_ms": {
-      "median": 0.644,
-      "p50": 0.457,
-      "p95": 0.831,
+      "median": 0.497,
+      "p50": 0.338,
+      "p95": 0.657,
       "measurement_scope": "local transcript processing only; excludes ASR, audio transport, network and dashboard delivery"
     },
     "events": [
@@ -114,22 +111,21 @@
           {
             "signal": "compliance_gap",
             "priority": "high",
-            "confidence": 1.0,
             "nudge": "Check the required disclosure before proceeding. Do not promise guaranteed approval or pricing.",
             "method": "keyword_rule",
-            "created_at": "2026-10-15T05:15:16.670488+00:00"
+            "created_at": "2026-10-23T02:30:40.295748+00:00"
           }
         ],
-        "processing_ms": 0.063,
-        "chunk_latency_ms": 0.457
+        "processing_ms": 0.078,
+        "chunk_latency_ms": 0.657
       },
       {
         "chunk": 2,
         "partial_transcript": "The agent guaranteed approval without telling the customer about the required disclosure.",
         "detected_signals": [],
         "nudges": [],
-        "processing_ms": 0.044,
-        "chunk_latency_ms": 0.831
+        "processing_ms": 0.016,
+        "chunk_latency_ms": 0.338
       }
     ]
   },
@@ -141,9 +137,9 @@
       "missed_cross_sell"
     ],
     "latency_ms": {
-      "median": 0.587,
-      "p50": 0.568,
-      "p95": 0.607,
+      "median": 0.485,
+      "p50": 0.311,
+      "p95": 0.66,
       "measurement_scope": "local transcript processing only; excludes ASR, audio transport, network and dashboard delivery"
     },
     "events": [
@@ -157,22 +153,21 @@
           {
             "signal": "missed_cross_sell",
             "priority": "medium",
-            "confidence": 1.0,
             "nudge": "Check whether an approved multi-vehicle offer is relevant to the customer's needs.",
             "method": "keyword_rule",
-            "created_at": "2026-10-15T05:15:16.787492+00:00"
+            "created_at": "2026-10-23T02:30:40.422634+00:00"
           }
         ],
-        "processing_ms": 0.112,
-        "chunk_latency_ms": 0.607
+        "processing_ms": 0.039,
+        "chunk_latency_ms": 0.311
       },
       {
         "chunk": 2,
         "partial_transcript": "The customer mentioned a second vehicle and another vehicle on the policy.",
         "detected_signals": [],
         "nudges": [],
-        "processing_ms": 0.034,
-        "chunk_latency_ms": 0.568
+        "processing_ms": 0.032,
+        "chunk_latency_ms": 0.66
       }
     ]
   },
@@ -182,9 +177,9 @@
     "chunks_processed": 2,
     "signals_emitted": [],
     "latency_ms": {
-      "median": 0.592,
-      "p50": 0.49,
-      "p95": 0.694,
+      "median": 0.417,
+      "p50": 0.311,
+      "p95": 0.524,
       "measurement_scope": "local transcript processing only; excludes ASR, audio transport, network and dashboard delivery"
     },
     "events": [
@@ -193,16 +188,16 @@
         "partial_transcript": "Hello, thank you for calling. How can",
         "detected_signals": [],
         "nudges": [],
-        "processing_ms": 0.069,
-        "chunk_latency_ms": 0.694
+        "processing_ms": 0.032,
+        "chunk_latency_ms": 0.524
       },
       {
         "chunk": 2,
         "partial_transcript": "Hello, thank you for calling. How can I help you today?",
         "detected_signals": [],
         "nudges": [],
-        "processing_ms": 0.029,
-        "chunk_latency_ms": 0.49
+        "processing_ms": 0.02,
+        "chunk_latency_ms": 0.311
       }
     ]
   }

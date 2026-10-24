@@ -4,69 +4,117 @@
     "passed_tests": 5,
     "review_tests": 0,
     "failed_tests": 0,
-    "top1_expected_source_matches": 3,
-    "top1_source_match_rate": 0.6,
-    "note": "Rule-based checks are not human relevance judgments or a production retrieval-accuracy benchmark.",
+    "top1_expected_source_matches": 5,
+    "top1_source_match_rate": 1.0,
+    "strict_top1_tests": 1,
+    "strict_top1_passed": 1,
+    "strict_top1_pass_rate": 1.0,
+    "note": "Rule-based prototype evaluation, not a human relevance judgment or production retrieval-accuracy benchmark. The business-vintage case uses strict top-1 chunk checks. The combined loan-amount case checks that both required amounts appear in the top three. Other cases use top-1 source and keyword checks.",
     "results": [
         {
             "query": "What is the minimum business vintage?",
             "expected_source": "faq.txt",
-            "expected_keyword": "24 months",
+            "acceptable_sources": [
+                "faq.txt"
+            ],
+            "expected_keywords": [
+                "24 months"
+            ],
+            "expected_chunk_id": "faq.txt::chunk_4",
+            "expected_topic_terms": [
+                "business",
+                "operation"
+            ],
+            "require_all_keywords_in_top3": false,
             "top_result": "faq.txt",
-            "top_score": 0.6517,
+            "top_chunk_id": "faq.txt::chunk_4",
+            "top_score": 0.3517,
             "top1_source_match": true,
+            "top1_keyword_match": true,
+            "top1_chunk_match": true,
+            "top1_topic_match": true,
             "expected_source_rank_in_top_3": 1,
             "source_found_in_top_3": true,
-            "keyword_found_in_top_3": true,
+            "covered_keywords_in_top3": [
+                "24 months"
+            ],
+            "all_expected_keywords_found": true,
+            "keyword_found_in_top3": true,
             "retrieved_evidence": [
                 {
                     "rank": 1,
                     "chunk_id": "faq.txt::chunk_4",
                     "source": "faq.txt",
                     "category": "faq",
-                    "adjusted_score": 0.6517,
+                    "adjusted_score": 0.3517,
                     "raw_tfidf_score": 0.0334,
                     "text": "Q4. How old must my business be?\nA. The business should have at least 24 months of continuous operation under the stated eligibility rule.",
                     "expected_source_match": true,
-                    "expected_keyword_in_chunk": true
+                    "matched_keywords": [
+                        "24 months"
+                    ],
+                    "expected_keyword_in_chunk": true,
+                    "expected_chunk_match": true
                 },
                 {
                     "rank": 2,
                     "chunk_id": "faq.txt::chunk_1",
                     "source": "faq.txt",
                     "category": "faq",
-                    "adjusted_score": 0.4511,
+                    "adjusted_score": 0.2511,
                     "raw_tfidf_score": 0.4078,
                     "text": "Q1. What is the minimum loan amount?\nA. The Business Growth Loan has a stated minimum amount of ₹2,00,000.",
                     "expected_source_match": true,
-                    "expected_keyword_in_chunk": false
+                    "matched_keywords": [],
+                    "expected_keyword_in_chunk": false,
+                    "expected_chunk_match": false
                 },
                 {
                     "rank": 3,
-                    "chunk_id": "faq.txt::chunk_2",
-                    "source": "faq.txt",
-                    "category": "faq",
-                    "adjusted_score": 0.2655,
-                    "raw_tfidf_score": 0.2355,
-                    "text": "Q2. What is the maximum loan amount?\nA. The stated maximum amount is ₹25,00,000.",
-                    "expected_source_match": true,
-                    "expected_keyword_in_chunk": false
+                    "chunk_id": "eligibility_rules.pdf::chunk_2",
+                    "source": "eligibility_rules.pdf",
+                    "category": "eligibility",
+                    "adjusted_score": 0.2421,
+                    "raw_tfidf_score": 0.1171,
+                    "text": "Eligibility decision examples Business operating for 36 months: meets the stated business-vintage requirement, subject to other checks. Business operating for 18 months: does not meet the stated 24-month business-vintage requirement. Requested amount of ■1 lakh: below the stated minimum product amount of ■2 lakh. Requested amount of ■30 lakh: above the stated maximum product amount of ■25 lakh. Missing documents: do not mark the customer as rejected solely because documents are missing; request the",
+                    "expected_source_match": false,
+                    "matched_keywords": [],
+                    "expected_keyword_in_chunk": false,
+                    "expected_chunk_match": false
                 }
             ],
-            "relevance_explanation": "The expected source and keyword appear in the top three. This is a rule-based match; semantic relevance still requires review.",
-            "verdict_basis": "rule_based_smoke_test_not_human_judgment",
+            "relevance_explanation": "The expected chunk ranks first and contains the required topic terms and keyword.",
+            "verdict_basis": "strict_top1_chunk_and_topic_check",
             "result": "PASS"
         },
         {
             "query": "What documents are required for the loan application?",
             "expected_source": "eligibility_rules.pdf",
-            "expected_keyword": "documents",
+            "acceptable_sources": [
+                "faq.txt",
+                "eligibility_rules.pdf",
+                "application_process.txt"
+            ],
+            "expected_keywords": [
+                "documents"
+            ],
+            "expected_chunk_id": null,
+            "expected_topic_terms": [],
+            "require_all_keywords_in_top3": false,
             "top_result": "faq.txt",
+            "top_chunk_id": "faq.txt::chunk_6",
             "top_score": 0.2813,
-            "top1_source_match": false,
-            "expected_source_rank_in_top_3": 3,
+            "top1_source_match": true,
+            "top1_keyword_match": true,
+            "top1_chunk_match": null,
+            "top1_topic_match": null,
+            "expected_source_rank_in_top_3": 1,
             "source_found_in_top_3": true,
-            "keyword_found_in_top_3": true,
+            "covered_keywords_in_top3": [
+                "documents"
+            ],
+            "all_expected_keywords_found": true,
+            "keyword_found_in_top3": true,
             "retrieved_evidence": [
                 {
                     "rank": 1,
@@ -76,8 +124,12 @@
                     "adjusted_score": 0.2813,
                     "raw_tfidf_score": 0.1713,
                     "text": "Q6. What documents are needed?\nA. Typical requirements include identity proof, PAN or applicable tax identification information, business proof/registration where applicable, and recent business bank statements or other requested financial records.",
-                    "expected_source_match": false,
-                    "expected_keyword_in_chunk": true
+                    "expected_source_match": true,
+                    "matched_keywords": [
+                        "documents"
+                    ],
+                    "expected_keyword_in_chunk": true,
+                    "expected_chunk_match": null
                 },
                 {
                     "rank": 2,
@@ -87,8 +139,12 @@
                     "adjusted_score": 0.2129,
                     "raw_tfidf_score": 0.0329,
                     "text": "- Basic identity/business information is available Stage 3 - Document collection Typical information/documents: - Identity proof - PAN or applicable tax identification - Business proof/registration where applicable - Recent business bank statements or other requested financial records Stage 4 - Assessment The information may be reviewed and verified. Additional documents may be requested. Stage 5 - Decision Final approval is subject to verification and internal assessment. Stage 6 - Customer communication The customer can be informed of the next step.",
-                    "expected_source_match": false,
-                    "expected_keyword_in_chunk": true
+                    "expected_source_match": true,
+                    "matched_keywords": [
+                        "documents"
+                    ],
+                    "expected_keyword_in_chunk": true,
+                    "expected_chunk_match": null
                 },
                 {
                     "rank": 3,
@@ -99,34 +155,60 @@
                     "raw_tfidf_score": 0.0879,
                     "text": "Applications are subject to internal assessment and verification. Required documents Identity proof such as an accepted government-issued identity document. PAN or applicable tax identification information. Proof of business existence/registration, where applicable. Recent business bank statements or other financial records requested during assessment. Additional documents may be requested depending on the application. Eligibility decision examples Business operating for 36 months: meets the stated business-vintage requirement, subject to other checks.",
                     "expected_source_match": true,
-                    "expected_keyword_in_chunk": true
+                    "matched_keywords": [
+                        "documents"
+                    ],
+                    "expected_keyword_in_chunk": true,
+                    "expected_chunk_match": null
                 }
             ],
-            "relevance_explanation": "The expected source and keyword appear in the top three. This is a rule-based match; semantic relevance still requires review.",
-            "verdict_basis": "rule_based_smoke_test_not_human_judgment",
+            "relevance_explanation": "The top result matches an acceptable source and contains all expected keywords. This is a rule-based check, not a human relevance judgment.",
+            "verdict_basis": "top1_acceptable_source_and_keyword_smoke_test",
             "result": "PASS"
         },
         {
             "query": "What is the minimum and maximum loan amount?",
             "expected_source": "faq.txt",
-            "expected_keyword": "25,00,000",
+            "acceptable_sources": [
+                "faq.txt"
+            ],
+            "expected_keywords": [
+                "2,00,000",
+                "25,00,000"
+            ],
+            "expected_chunk_id": null,
+            "expected_topic_terms": [],
+            "require_all_keywords_in_top3": true,
             "top_result": "faq.txt",
-            "top_score": 1.1336,
+            "top_chunk_id": "faq.txt::chunk_1",
+            "top_score": 0.8336,
             "top1_source_match": true,
+            "top1_keyword_match": false,
+            "top1_chunk_match": null,
+            "top1_topic_match": null,
             "expected_source_rank_in_top_3": 1,
             "source_found_in_top_3": true,
-            "keyword_found_in_top_3": true,
+            "covered_keywords_in_top3": [
+                "2,00,000",
+                "25,00,000"
+            ],
+            "all_expected_keywords_found": true,
+            "keyword_found_in_top3": true,
             "retrieved_evidence": [
                 {
                     "rank": 1,
                     "chunk_id": "faq.txt::chunk_1",
                     "source": "faq.txt",
                     "category": "faq",
-                    "adjusted_score": 1.1336,
+                    "adjusted_score": 0.8336,
                     "raw_tfidf_score": 0.4986,
                     "text": "Q1. What is the minimum loan amount?\nA. The Business Growth Loan has a stated minimum amount of ₹2,00,000.",
                     "expected_source_match": true,
-                    "expected_keyword_in_chunk": false
+                    "matched_keywords": [
+                        "2,00,000"
+                    ],
+                    "expected_keyword_in_chunk": true,
+                    "expected_chunk_match": null
                 },
                 {
                     "rank": 2,
@@ -137,7 +219,11 @@
                     "raw_tfidf_score": 0.5255,
                     "text": "Q2. What is the maximum loan amount?\nA. The stated maximum amount is ₹25,00,000.",
                     "expected_source_match": true,
-                    "expected_keyword_in_chunk": true
+                    "matched_keywords": [
+                        "25,00,000"
+                    ],
+                    "expected_keyword_in_chunk": true,
+                    "expected_chunk_match": null
                 },
                 {
                     "rank": 3,
@@ -148,109 +234,159 @@
                     "raw_tfidf_score": 0.089,
                     "text": "business information and internal assessment. Do not quote a guaranteed rate before assessment. Security: Security/collateral requirements, if any, depend on the application and approved product terms. Indicative product information [('Item', 'Information'), ('Loan amount', '■2 lakh - ■25 lakh'), ('Tenure', '12 - 60 months'), ('Minimum business vintage', '24 months'), ('Initial assessment', 'Typically 1-2 business days after required information is received'), ('Pricing', 'Customer-specific; not guaranteed before assessment')] Important communication rules Do not promise loan approval.",
                     "expected_source_match": false,
-                    "expected_keyword_in_chunk": false
+                    "matched_keywords": [],
+                    "expected_keyword_in_chunk": false,
+                    "expected_chunk_match": null
                 }
             ],
-            "relevance_explanation": "The expected source and keyword appear in the top three. This is a rule-based match; semantic relevance still requires review.",
-            "verdict_basis": "rule_based_smoke_test_not_human_judgment",
+            "relevance_explanation": "All required loan-amount facts appear in the top three. The response must combine evidence from multiple chunks if no single chunk contains both amounts.",
+            "verdict_basis": "top3_required_keyword_coverage",
             "result": "PASS"
         },
         {
             "query": "What should I say if the customer thinks the interest rate is too high?",
             "expected_source": "objection_handling.txt",
-            "expected_keyword": "interest",
-            "top_result": "faq.txt",
-            "top_score": 0.7522,
-            "top1_source_match": false,
-            "expected_source_rank_in_top_3": 3,
+            "acceptable_sources": [
+                "objection_handling.txt"
+            ],
+            "expected_keywords": [
+                "interest"
+            ],
+            "expected_chunk_id": null,
+            "expected_topic_terms": [],
+            "require_all_keywords_in_top3": false,
+            "top_result": "objection_handling.txt",
+            "top_chunk_id": "objection_handling.txt::chunk_0",
+            "top_score": 0.801,
+            "top1_source_match": true,
+            "top1_keyword_match": true,
+            "top1_chunk_match": null,
+            "top1_topic_match": null,
+            "expected_source_rank_in_top_3": 1,
             "source_found_in_top_3": true,
-            "keyword_found_in_top_3": true,
+            "covered_keywords_in_top3": [
+                "interest"
+            ],
+            "all_expected_keywords_found": true,
+            "keyword_found_in_top3": true,
             "retrieved_evidence": [
                 {
                     "rank": 1,
-                    "chunk_id": "faq.txt::chunk_8",
-                    "source": "faq.txt",
-                    "category": "faq",
-                    "adjusted_score": 0.7522,
-                    "raw_tfidf_score": 0.1672,
-                    "text": "Q8. What interest rate will I get?\nA. Pricing is customer-specific. The agent must not guarantee a rate before the approved pricing process.",
-                    "expected_source_match": false,
-                    "expected_keyword_in_chunk": true
-                },
-                {
-                    "rank": 2,
-                    "chunk_id": "faq.txt::chunk_16",
-                    "source": "faq.txt",
-                    "category": "faq",
-                    "adjusted_score": 0.7511,
-                    "raw_tfidf_score": 0.1461,
-                    "text": "Q16. Do you have today's interest rates?\nA. The prototype knowledge base does not contain a live rate table. The agent should say that current live pricing is unavailable and offer human follow-up rather than inventing a rate.",
-                    "expected_source_match": false,
-                    "expected_keyword_in_chunk": true
-                },
-                {
-                    "rank": 3,
                     "chunk_id": "objection_handling.txt::chunk_0",
                     "source": "objection_handling.txt",
                     "category": "objection_handling",
-                    "adjusted_score": 0.451,
+                    "adjusted_score": 0.801,
                     "raw_tfidf_score": 0.276,
                     "text": "NovaFin Business Loan - Objection Handling Guide Version: 1.0 For prototype conversation design only. 1. Objection: \"The interest rate is too high.\" \"I understand that the pricing is an important part of the decision. The final pricing is customer-specific and depends on the application and assessment. I can help collect the details needed for an assessment, or arrange a callback if you want to discuss pricing with a representative.\" Do not: - Promise a lower rate.",
                     "expected_source_match": true,
-                    "expected_keyword_in_chunk": true
+                    "matched_keywords": [
+                        "interest"
+                    ],
+                    "expected_keyword_in_chunk": true,
+                    "expected_chunk_match": null
+                },
+                {
+                    "rank": 2,
+                    "chunk_id": "objection_handling.txt::chunk_1",
+                    "source": "objection_handling.txt",
+                    "category": "objection_handling",
+                    "adjusted_score": 0.5646,
+                    "raw_tfidf_score": 0.0896,
+                    "text": "Do not: - Promise a lower rate. - Claim a specific rate without approved pricing data. - Say the customer will definitely be approved. 2. Objection: \"I don't want to share my bank statement.\" \"I understand the concern. Recent financial records may be requested as part of the assessment. I can explain the information currently listed as required, and if you prefer, I can arrange human assistance to discuss the documentation.\" 3. Objection: \"I don't have all my documents.\"",
+                    "expected_source_match": true,
+                    "matched_keywords": [],
+                    "expected_keyword_in_chunk": false,
+                    "expected_chunk_match": null
+                },
+                {
+                    "rank": 3,
+                    "chunk_id": "objection_handling.txt::chunk_6",
+                    "source": "objection_handling.txt",
+                    "category": "objection_handling",
+                    "adjusted_score": 0.5428,
+                    "raw_tfidf_score": 0.0428,
+                    "text": "I can arrange human assistance if you want to ask about other available options.\" 10. Objection: \"I don't want to answer questions.\" \"No problem. I can stop the qualification process and arrange a callback or human assistance instead.\" Escalation triggers: - Customer explicitly asks for a human. - Customer disputes a policy or eligibility decision. - Customer requests live pricing not present in the knowledge base. - Customer asks about a product or exception not covered by the knowledge base.",
+                    "expected_source_match": true,
+                    "matched_keywords": [],
+                    "expected_keyword_in_chunk": false,
+                    "expected_chunk_match": null
                 }
             ],
-            "relevance_explanation": "The expected source and keyword appear in the top three. This is a rule-based match; semantic relevance still requires review.",
-            "verdict_basis": "rule_based_smoke_test_not_human_judgment",
+            "relevance_explanation": "The top result matches an acceptable source and contains all expected keywords. This is a rule-based check, not a human relevance judgment.",
+            "verdict_basis": "top1_acceptable_source_and_keyword_smoke_test",
             "result": "PASS"
         },
         {
             "query": "Can a business that has operated for only one year qualify?",
             "expected_source": "eligibility_rules.pdf",
-            "expected_keyword": "24 months",
+            "acceptable_sources": [
+                "eligibility_rules.pdf"
+            ],
+            "expected_keywords": [
+                "24 months"
+            ],
+            "expected_chunk_id": null,
+            "expected_topic_terms": [],
+            "require_all_keywords_in_top3": false,
             "top_result": "eligibility_rules.pdf",
-            "top_score": 0.2353,
+            "top_chunk_id": "eligibility_rules.pdf::chunk_0",
+            "top_score": 0.4853,
             "top1_source_match": true,
+            "top1_keyword_match": true,
+            "top1_chunk_match": null,
+            "top1_topic_match": null,
             "expected_source_rank_in_top_3": 1,
             "source_found_in_top_3": true,
-            "keyword_found_in_top_3": true,
+            "covered_keywords_in_top3": [
+                "24 months"
+            ],
+            "all_expected_keywords_found": true,
+            "keyword_found_in_top3": true,
             "retrieved_evidence": [
                 {
                     "rank": 1,
                     "chunk_id": "eligibility_rules.pdf::chunk_0",
                     "source": "eligibility_rules.pdf",
                     "category": "eligibility",
-                    "adjusted_score": 0.2353,
+                    "adjusted_score": 0.4853,
                     "raw_tfidf_score": 0.0853,
                     "text": "NovaFin Business Loan - Eligibility & Document Rules v1.1 Minimum eligibility Applicant must be an adult and legally able to enter into the relevant agreement. Business must have operated continuously for at least 24 months. Applicant must provide sufficient information for identity, business and financial verification. Requested loan amount must fall within the product's available range. Applications are subject to internal assessment and verification. Required documents Identity proof such as an accepted government-issued identity document.",
                     "expected_source_match": true,
-                    "expected_keyword_in_chunk": true
+                    "matched_keywords": [
+                        "24 months"
+                    ],
+                    "expected_keyword_in_chunk": true,
+                    "expected_chunk_match": null
                 },
                 {
                     "rank": 2,
                     "chunk_id": "eligibility_rules.pdf::chunk_2",
                     "source": "eligibility_rules.pdf",
                     "category": "eligibility",
-                    "adjusted_score": 0.1688,
+                    "adjusted_score": 0.4188,
                     "raw_tfidf_score": 0.0438,
                     "text": "Eligibility decision examples Business operating for 36 months: meets the stated business-vintage requirement, subject to other checks. Business operating for 18 months: does not meet the stated 24-month business-vintage requirement. Requested amount of ■1 lakh: below the stated minimum product amount of ■2 lakh. Requested amount of ■30 lakh: above the stated maximum product amount of ■25 lakh. Missing documents: do not mark the customer as rejected solely because documents are missing; request the",
                     "expected_source_match": true,
-                    "expected_keyword_in_chunk": false
+                    "matched_keywords": [],
+                    "expected_keyword_in_chunk": false,
+                    "expected_chunk_match": null
                 },
                 {
                     "rank": 3,
                     "chunk_id": "eligibility_rules.pdf::chunk_1",
                     "source": "eligibility_rules.pdf",
                     "category": "eligibility",
-                    "adjusted_score": 0.1663,
+                    "adjusted_score": 0.4163,
                     "raw_tfidf_score": 0.0413,
                     "text": "Applications are subject to internal assessment and verification. Required documents Identity proof such as an accepted government-issued identity document. PAN or applicable tax identification information. Proof of business existence/registration, where applicable. Recent business bank statements or other financial records requested during assessment. Additional documents may be requested depending on the application. Eligibility decision examples Business operating for 36 months: meets the stated business-vintage requirement, subject to other checks.",
                     "expected_source_match": true,
-                    "expected_keyword_in_chunk": false
+                    "matched_keywords": [],
+                    "expected_keyword_in_chunk": false,
+                    "expected_chunk_match": null
                 }
             ],
-            "relevance_explanation": "The expected source and keyword appear in the top three. This is a rule-based match; semantic relevance still requires review.",
-            "verdict_basis": "rule_based_smoke_test_not_human_judgment",
+            "relevance_explanation": "The top result matches an acceptable source and contains all expected keywords. This is a rule-based check, not a human relevance judgment.",
+            "verdict_basis": "top1_acceptable_source_and_keyword_smoke_test",
             "result": "PASS"
         }
     ]

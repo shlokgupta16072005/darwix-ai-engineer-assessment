@@ -93,11 +93,6 @@ def main():
     bot = VoiceBot(config)
     response = bot.respond(normalized_transcript)
 
-    # Temporary workaround for the existing Indonesian greeting branch.
-    # We will fix the source code after confirming this demo works.
-    if args.language == "id" and normalized_transcript.lower().strip(" !?.") == "halo":
-        response = config.greeting
-
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     output_dir = ROOT / "evidence" / "audio_demos" / f"{args.language}_{timestamp}"
     output_dir.mkdir(parents=True, exist_ok=True)

@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from typing import List, Dict
 import re
@@ -7,7 +6,7 @@ import sys
 import numpy as np
 
 # ============================================================
-# PROJECT PATH
+# PROJECT PATH AND IMPORTS
 # ============================================================
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -15,19 +14,13 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-# ============================================================
-# PROJECT IMPORTS
-# ============================================================
-
 from ingestion.document_loader import load_all_documents
 from ingestion.cleaner import clean_documents
 from ingestion.pii_detector import process_documents
 from ingestion.chunker import chunk_documents
 
-from retrieval.vector_store import (
-    build_vector_store,
-    load_vector_store,
-)
+from retrieval.vector_store import build_vector_store, load_vector_store
+
 
 # ============================================================
 # COSINE SIMILARITY
@@ -51,89 +44,95 @@ def cosine_similarity(query_vector, document_matrix):
 
 
 # ============================================================
-# QUERY INTENT
+# QUERY CATEGORIES AND INTENT
 # ============================================================
 
 def detect_query_categories(query: str) -> List[str]:
-    """Detect relevant knowledge-base categories using query terms."""
-    query_lower = query.lower()
+    """Detect knowledge-base categories relevant to the query."""
+    q = query.lower()
     categories = []
 
-    eligibility_terms = [
-        "eligible", "eligibility", "qualify", "qualification",
-        "business vintage", "business age", "operated",
-        "months old", "years old", "minimum age", "how old",
-    ]
+    term_groups = {
+        "eligibility": (
+            "eligible", "eligibility", "qualify", "qualification",
+            "business vintage", "business age", "operated",
+            "months old", "years old", "minimum age", "how old",
+        ),
+        "application_process": (
+            "document", "documents", "paperwork", "proof",
+            "identity proof", "bank statement", "pan",
+            "tax identification", "application", "apply",
+        ),
+        "product": (
+            "loan amount", "minimum loan", "maximum loan", "borrow",
+            "loan range", "loan limit", "tenure", "loan product",
+        ),
+        "objection_handling": (
+            "too high", "too expensive", "don't want to share",
+            "do not want to share", "don't trust", "do not trust",
+            "objection", "what should i say", "how should i respond",
+            "customer thinks", "customer says",
+        ),
+        "faq": (
+            "faq", "what is", "how much", "how long",
+            "do you have", "how old", "business vintage",
+        ),
+    }
 
-    document_terms = [
-        "document", "documents", "required documents", "paperwork",
-        "proof", "identity proof", "bank statement", "pan",
-        "tax identification", "application", "apply",
-    ]
-
-    product_terms = [
-        "loan amount", "minimum loan", "maximum loan", "borrow",
-        "loan range", "loan limit", "tenure", "loan product",
-    ]
-
-    objection_terms = [
-        "too high", "too expensive", "don't want to share",
-        "do not want to share", "don't trust", "do not trust",
-        "objection", "what should i say", "how should i respond",
-        "customer thinks", "customer says",
-    ]
-
-    faq_terms = [
-        "faq", "what is", "how much", "how long",
-        "do you have", "how old", "business vintage",
-    ]
-
-    if any(term in query_lower for term in eligibility_terms):
-        categories.append("eligibility")
-
-    if any(term in query_lower for term in document_terms):
-        categories.append("application_process")
-
-    if any(term in query_lower for term in product_terms):
-        categories.append("product")
-
-    if any(term in query_lower for term in objection_terms):
-        categories.append("objection_handling")
-
-    if any(term in query_lower for term in faq_terms):
-        categories.append("faq")
+    for category, terms in term_groups.items():
+        if any(term in q for term in terms):
+            categories.append(category)
 
     return categories
 
 
 def detect_query_intent(query: str) -> str:
-    """Identify the primary intent for direct FAQ matching."""
+    """Identify a specific intent before applying ranking boosts."""
     q = query.lower()
 
-    # Check specific intents before broad ones.
-    if any(term in q for term in (
-        "business vintage", "business age", "how old",
-        "months old", "years old", "minimum business age",
-        "how long has my business", "business operating",
-    )):
+    explicit_vintage_terms = (
+        "business vintage", "business-vintage", "business age",
+        "how old", "months old", "years old",
+        "minimum business age", "how long has my business",
+        "business operating", "operated for only one year",
+        "one year qualify",
+    )
+
+    # Conservative recovery for a malformed ASR transcript.
+    # Do not classify ordinary minimum-loan-amount questions as vintage.
+    has_asr_vintage_cues = (
+        "business" in q
+        and "minimum" in q
+        and any(term in q for term in ("loan", "required", "requirement"))
+        and not any(term in q for term in (
+            "loan amount", "minimum loan amount",
+            "minimum and maximum loan amount",
+        ))
+    )
+
+    if (
+        any(term in q for term in explicit_vintage_terms)
+        or has_asr_vintage_cues
+    ):
         return "business_vintage"
 
     if any(term in q for term in (
         "required document", "documents required", "paperwork",
         "what documents", "which documents", "identity proof",
         "bank statement", "what do i need to apply",
+        "documents are needed",
     )):
         return "documents"
 
     if any(term in q for term in (
-        "minimum loan", "minimum amount", "smallest loan",
-        "least amount", "minimum and maximum loan",
+        "minimum and maximum loan", "minimum loan",
+        "minimum amount", "smallest loan", "least amount",
     )):
         return "minimum_loan_amount"
 
     if any(term in q for term in (
-        "maximum loan", "maximum amount", "largest loan",
-        "highest amount", "loan limit", "minimum and maximum loan",
+        "maximum loan", "maximum amount", "largest amount",
+        "highest amount", "loan limit",
     )):
         return "maximum_loan_amount"
 
@@ -154,6 +153,12 @@ def detect_query_intent(query: str) -> str:
     )):
         return "interest_rate"
 
+    if any(term in q for term in (
+        "what should i say", "how should i respond",
+        "customer thinks", "customer says", "objection",
+    )):
+        return "objection_handling"
+
     return "general"
 
 
@@ -166,7 +171,7 @@ def apply_category_boost(
     similarities: np.ndarray,
     chunks: List[Dict],
 ) -> np.ndarray:
-    """Apply small, rule-based relevance boosts by chunk category."""
+    """Apply modest boosts to matching document categories."""
     adjusted_scores = similarities.copy()
     categories = detect_query_categories(query)
 
@@ -180,7 +185,6 @@ def apply_category_boost(
 
     for index, chunk in enumerate(chunks):
         category = chunk.get("category", "")
-
         if category in categories:
             adjusted_scores[index] += boost_values.get(category, 0.0)
 
@@ -196,54 +200,54 @@ def apply_content_boost(
     similarities: np.ndarray,
     chunks: List[Dict],
 ) -> np.ndarray:
-    """Boost chunks containing terms relevant to the query."""
+    """Boost chunks containing content relevant to the query."""
     adjusted_scores = similarities.copy()
-    query_lower = query.lower()
+    q = query.lower()
 
     keyword_groups = {
-        "documents": [
+        "documents": (
             "identity proof", "pan", "tax identification",
             "business proof", "business registration",
             "bank statements", "financial records",
             "required documents",
-        ],
-        "eligibility": [
+        ),
+        "eligibility": (
             "24 months", "business-vintage", "business vintage",
             "minimum eligibility", "continuous operation",
             "business should have", "business has operated",
-        ],
-        "loan_amount": [
+        ),
+        "loan_amount": (
             "₹2,00,000", "₹25,00,000", "2 lakh", "25 lakh",
             "loan amount", "maximum loan", "minimum loan",
-        ],
-        "interest_rate": [
+        ),
+        "interest_rate": (
             "interest rate", "pricing", "customer-specific",
             "live rate", "live pricing",
-        ],
+        ),
     }
 
     active_groups = []
 
-    if any(term in query_lower for term in (
+    if any(term in q for term in (
         "document", "documents", "paperwork", "proof", "pan",
         "bank statement", "apply", "application",
     )):
         active_groups.append("documents")
 
-    if any(term in query_lower for term in (
+    if any(term in q for term in (
         "eligible", "eligibility", "qualify", "business vintage",
         "business age", "operated", "months old", "years old",
         "how old",
     )):
         active_groups.append("eligibility")
 
-    if any(term in query_lower for term in (
+    if any(term in q for term in (
         "loan amount", "minimum loan", "maximum loan",
         "borrow", "loan range",
     )):
         active_groups.append("loan_amount")
 
-    if any(term in query_lower for term in (
+    if any(term in q for term in (
         "interest rate", "pricing", "too high", "too expensive",
     )):
         active_groups.append("interest_rate")
@@ -253,9 +257,8 @@ def apply_content_boost(
 
         for group in active_groups:
             matches = sum(
-                1
+                keyword.lower() in text
                 for keyword in keyword_groups[group]
-                if keyword.lower() in text
             )
 
             if matches:
@@ -273,13 +276,10 @@ def apply_faq_question_boost(
     similarities: np.ndarray,
     chunks: List[Dict],
 ) -> np.ndarray:
-    """
-    Prioritize FAQ questions matching the query's intent.
-    General word overlap alone cannot create a large boost.
-    """
+    """Boost FAQ question matches without overwhelming source relevance."""
     adjusted_scores = similarities.copy()
-    query_lower = query.lower()
     intent = detect_query_intent(query)
+    query_lower = query.lower()
 
     stop_words = {
         "a", "an", "and", "are", "can", "do", "does", "for",
@@ -292,8 +292,6 @@ def apply_faq_question_boost(
         set(re.findall(r"\b[a-z0-9]+\b", query_lower)) - stop_words
     )
 
-    # These are explicit intent-to-FAQ-question mappings.
-    # Match the question, not merely words appearing in its answer.
     intent_question_phrases = {
         "business_vintage": (
             "how old must my business be",
@@ -342,12 +340,23 @@ def apply_faq_question_boost(
             continue
 
         question_text = match.group(1).lower()
+        # Avoid ranking unrelated FAQ topics for business-vintage queries.
+        if intent == "business_vintage" and any(
+            term in question_text
+            for term in (
+                "loan amount",
+                "minimum loan",
+                "maximum loan",
+                "loan tenure",
+                "interest rate",
+                "documents",
+            )
+        ):
+            adjusted_scores[index] -= 0.20
         question_terms = (
-            set(re.findall(r"\b[a-z0-9]+\b", question_text))
-            - stop_words
+            set(re.findall(r"\b[a-z0-9]+\b", question_text)) - stop_words
         )
 
-        # Only a small boost for general lexical overlap.
         if query_terms and question_terms:
             overlap = len(query_terms & question_terms)
             coverage = overlap / len(query_terms)
@@ -355,12 +364,82 @@ def apply_faq_question_boost(
             if overlap:
                 adjusted_scores[index] += min(0.04, coverage * 0.04)
 
-        # Stronger boost only for a recognized matching question intent.
         phrases = intent_question_phrases.get(intent, ())
-        if phrases and any(
-            phrase in question_text for phrase in phrases
+        if phrases and any(phrase in question_text for phrase in phrases):
+            # Keep FAQ matching useful without overwhelming specific sources.
+            adjusted_scores[index] += 0.20
+
+    return adjusted_scores
+
+
+# ============================================================
+# SOURCE-INTENT BOOST
+# ============================================================
+
+def apply_source_intent_boost(
+    query: str,
+    similarities: np.ndarray,
+    chunks: List[Dict],
+) -> np.ndarray:
+    """
+    Prefer dedicated sources for objection-handling and specific
+    eligibility-decision queries. Document questions rely on lexical,
+    category, content, and FAQ-question matching instead of a blanket
+    eligibility-source boost.
+
+    These are heuristic ranking boosts, not relevance guarantees.
+    """
+    adjusted_scores = similarities.copy()
+    q = query.lower()
+    intent = detect_query_intent(query)
+
+    objection_intent = intent == "objection_handling" or any(
+        phrase in q
+        for phrase in (
+            "what should i say",
+            "how should i respond",
+            "customer thinks",
+            "customer says",
+            "objection",
+            "too high",
+            "too expensive",
+        )
+    )
+
+    # Apply this only to explicit eligibility decisions, not general
+    # questions asking for the minimum business vintage.
+    eligibility_decision_intent = (
+        intent == "business_vintage"
+        and any(
+            phrase in q
+            for phrase in (
+                "qualify",
+                "eligible",
+                "eligibility",
+                "only one year",
+                "one year",
+                "12 months",
+            )
+        )
+    )
+
+    for index, chunk in enumerate(chunks):
+        category = chunk.get("category", "")
+        source = Path(
+            str(chunk.get("source", "")).replace("\\", "/")
+        ).name.lower()
+
+        if objection_intent and (
+            category == "objection_handling"
+            or source == "objection_handling.txt"
         ):
-            adjusted_scores[index] += 0.50
+            adjusted_scores[index] += 0.35
+
+        if eligibility_decision_intent and (
+            category == "eligibility"
+            or source == "eligibility_rules.pdf"
+        ):
+            adjusted_scores[index] += 0.25
 
     return adjusted_scores
 
@@ -376,7 +455,8 @@ def search(query: str, top_k: int = 3) -> List[Dict]:
     Pipeline:
         Query -> TF-IDF -> cosine similarity
         -> category boost -> content boost
-        -> FAQ intent/question boost -> ranked results
+        -> FAQ question boost -> source-intent boost
+        -> ranked results
     """
     if not query or not query.strip():
         return []
@@ -385,7 +465,6 @@ def search(query: str, top_k: int = 3) -> List[Dict]:
         return []
 
     vectorizer, store = load_vector_store()
-
     chunks = store["chunks"]
     matrix = store["matrix"]
 
@@ -404,8 +483,11 @@ def search(query: str, top_k: int = 3) -> List[Dict]:
         query, adjusted_scores, chunks
     )
 
-    ranked_indices = np.argsort(adjusted_scores)[::-1]
+    adjusted_scores = apply_source_intent_boost(
+        query, adjusted_scores, chunks
+    )
 
+    ranked_indices = np.argsort(adjusted_scores)[::-1]
     results = []
 
     for index in ranked_indices[:top_k]:

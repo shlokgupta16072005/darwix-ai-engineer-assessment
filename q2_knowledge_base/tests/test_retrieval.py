@@ -70,3 +70,21 @@ def test_cosine_similarity_returns_zero_for_zero_query():
 
 def test_search_returns_empty_for_blank_query():
     assert search("   ") == []
+
+def test_business_vintage_query_ranks_relevant_faq_first():
+    results = search("What is the minimum business vintage?", top_k=3)
+
+    assert results, "Search should return results"
+
+    top_result = results[0]
+    top_text = top_result["text"].lower()
+
+    assert "24 months" in top_text
+    assert (
+        "business" in top_text
+        and (
+            "operation" in top_text
+            or "old must my business be" in top_text
+            or "business vintage" in top_text
+        )
+    )
